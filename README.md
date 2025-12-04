@@ -28,6 +28,7 @@ Hotlap Server는 헥사고날/클린 아키텍처 접근 방식을 따르는 Spr
 com.hotlap.server
 ├── application        # 애플리케이션 서비스 (유스케이스)
 │   └── foo
+│       ├── service        # 도메인 관련 비즈니스 로직
 │       ├── model
 │       │   ├── command    # 쓰기 작업을 위한 명령 객체
 │       │   └── result     # 읽기 작업을 위한 결과 객체
