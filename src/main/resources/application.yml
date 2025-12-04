@@ -1,0 +1,42 @@
+# default profile
+
+# Spring
+spring:
+  profiles:
+    include:
+      - httpclient
+  servlet:
+    multipart:
+      enabled: true
+      max-file-size: 100MB
+      max-request-size: 100MB
+  # swagger issue
+  mvc:
+    pathmatch:
+      matching-strategy: ant_path_matcher
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+    show-sql: true
+    open-in-view: false
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+# Server
+server:
+  port: 8080
+  tomcat:
+    connection-timeout: 30000
+    max-threads: 100
+    min-spare-threads: 50
+    accept-count: 50
+    uri-encoding: UTF-8
+  forward-headers-strategy: framework
+
+# Swagger
+springdoc:
+  api-docs:
+    enabled: true   # openApi 문서 활성화
+  swagger-ui:
+    enabled: true   # UI 활성화
+  override-with-generic-response: false  # 일반화된 응답 사용 여부

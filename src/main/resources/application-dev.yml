@@ -1,0 +1,12 @@
+# dev profile
+
+# Spring
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://localhost:3306/hotlap?useUnicode=true&charset=utf8mb4&characterEncoding=utf8&zeroDateTimeBehavior=convertToNull&rewriteBatchedStatements=true
+    username: root
+    password: root1234
+    hikari:
+      minimum-idle: 10
+      maximum-pool-size: 20
