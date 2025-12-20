@@ -15,20 +15,22 @@ import java.util.TimeZone;
 @SpringBootApplication
 @RequiredArgsConstructor
 public class Application implements ApplicationListener<ApplicationReadyEvent> {
-    private final Environment environment;
 
-    public static void main(String[] args) {
-        init();
-        SpringApplication.run(Application.class, args);
-    }
+	private final Environment environment;
 
-    @Override
-    public void onApplicationEvent(ApplicationReadyEvent event) {
-        log.info("applicationReady status{}", Arrays.toString(environment.getActiveProfiles()));
-    }
+	public static void main(String[] args) {
+		init();
+		SpringApplication.run(Application.class, args);
+	}
 
-    private static void init() {
-        log.info("Spring Server TimeZone : Asia/Seoul");
-        TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
-    }
+	@Override
+	public void onApplicationEvent(ApplicationReadyEvent event) {
+		log.info("applicationReady status{}", Arrays.toString(environment.getActiveProfiles()));
+	}
+
+	private static void init() {
+		log.info("Spring Server TimeZone : Asia/Seoul");
+		TimeZone.setDefault(TimeZone.getTimeZone("Asia/Seoul"));
+	}
+
 }

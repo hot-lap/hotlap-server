@@ -11,11 +11,12 @@ import org.springframework.transaction.annotation.Transactional;
 @Repository
 @RequiredArgsConstructor
 public class FooQueryRepository {
-    private final FooJpaRepository fooJpaRepository;
 
-    @Transactional(readOnly = true)
-    public Foo findByIdOrThrow(Long id) {
-        return fooJpaRepository.findById(id)
-                .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_FOO_ERROR));
-    }
+	private final FooJpaRepository fooJpaRepository;
+
+	@Transactional(readOnly = true)
+	public Foo findByIdOrThrow(Long id) {
+		return fooJpaRepository.findById(id).orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_FOO_ERROR));
+	}
+
 }

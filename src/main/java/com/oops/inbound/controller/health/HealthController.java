@@ -19,17 +19,16 @@ import java.util.Arrays;
 @RequestMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 @RequiredArgsConstructor
 public class HealthController {
-    private final Environment environment;
 
-    @Operation(summary = "health check")
-    @GetMapping("/health")
-    public ResponseDto<HealthResponse> health() {
-        var response = new HealthResponse(
-                "Health Good!~",
-                Arrays.toString(environment.getActiveProfiles()),
-                LocalDateTime.now()
-        );
+	private final Environment environment;
 
-        return ResponseDto.wrap(response);
-    }
+	@Operation(summary = "health check")
+	@GetMapping("/health")
+	public ResponseDto<HealthResponse> health() {
+		var response = new HealthResponse("Health Good!~", Arrays.toString(environment.getActiveProfiles()),
+				LocalDateTime.now());
+
+		return ResponseDto.wrap(response);
+	}
+
 }

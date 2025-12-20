@@ -10,13 +10,13 @@ import org.springframework.stereotype.Service;
 @Service
 @RequiredArgsConstructor
 public class FooRegisterService {
-    private final FooCommandRepository fooCommandRepository;
 
-    public FooResult register(FooRegisterCommand command) {
-        var createdFoo = fooCommandRepository.save(
-                Foo.builder().description(command.description()).build()
-        );
+	private final FooCommandRepository fooCommandRepository;
 
-        return FooResult.from(createdFoo);
-    }
+	public FooResult register(FooRegisterCommand command) {
+		var createdFoo = fooCommandRepository.save(Foo.builder().description(command.description()).build());
+
+		return FooResult.from(createdFoo);
+	}
+
 }

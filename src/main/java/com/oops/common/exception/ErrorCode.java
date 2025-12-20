@@ -6,11 +6,18 @@ import lombok.RequiredArgsConstructor;
 @Getter
 @RequiredArgsConstructor
 public enum ErrorCode {
-    INTERNAL_SERVER_ERROR("예기치 못한 에러가 발생했습니다."),
-    INVALID_REQUEST_ERROR("잘못된 요청입니다."),
 
-    NOT_FOUND_FOO_ERROR("foo를 찾을 수 없습니다."),
-    ;
+	// General
+	INTERNAL_SERVER_ERROR("예기치 못한 에러가 발생했습니다."), INVALID_REQUEST_ERROR("잘못된 요청입니다."), BAD_REQUEST_ERROR("부적절한 요청입니다."),
 
-    private final String message;
+	// Validation
+	REQUIRED_PARAMETER_MISSING_ERROR("필수 파라미터가 누락되었습니다."),
+
+	// Encryption
+	ENCRYPTION_ERROR("암호화에 실패했습니다."), DECRYPTION_ERROR("복호화에 실패했습니다."),
+
+	NOT_FOUND_FOO_ERROR("foo를 찾을 수 없습니다."),;
+
+	private final String message;
+
 }

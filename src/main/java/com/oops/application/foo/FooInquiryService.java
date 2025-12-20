@@ -6,17 +6,21 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 public interface FooInquiryService {
-    FooResult inquiry(Long id);
 
-    @Service
-    @RequiredArgsConstructor
-    class Default implements FooInquiryService {
-        private final FooQueryRepository fooQueryRepository;
+	FooResult inquiry(Long id);
 
-        @Override
-        public FooResult inquiry(Long id) {
-            var foo = fooQueryRepository.findByIdOrThrow(id);
-            return FooResult.from(foo);
-        }
-    }
+	@Service
+	@RequiredArgsConstructor
+	class Default implements FooInquiryService {
+
+		private final FooQueryRepository fooQueryRepository;
+
+		@Override
+		public FooResult inquiry(Long id) {
+			var foo = fooQueryRepository.findByIdOrThrow(id);
+			return FooResult.from(foo);
+		}
+
+	}
+
 }

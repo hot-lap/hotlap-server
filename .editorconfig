@@ -1,0 +1,73 @@
+root = true
+
+[*]
+charset = utf-8
+end_of_line = lf
+insert_final_newline = true
+trim_trailing_whitespace = true
+indent_style = space
+indent_size = 4
+tab_width = 4
+max_line_length = 120
+
+# Java Files
+# NOTE: For team-wide, IDE-agnostic formatting, enforce a formatter in build/CI
+# (e.g., spring-javaformat or a dedicated formatter via Gradle/Maven).
+# Keep this section lean to avoid conflicts between IDEs/formatters.
+[*.java]
+indent_size = 4
+continuation_indent_size = 8
+
+# IntelliJ-only (best-effort): keep editor visuals consistent
+ij_java_right_margin = 120
+
+# Imports: avoid wildcard imports by default
+ij_java_class_count_to_use_import_on_demand = 999
+ij_java_names_count_to_use_import_on_demand = 999
+ij_java_use_single_class_imports = true
+
+# Annotations
+ij_java_insert_override_annotation = true
+
+# Blank lines (readable defaults)
+ij_java_blank_lines_after_package = 1
+ij_java_blank_lines_around_class = 1
+ij_java_blank_lines_around_method = 1
+ij_java_blank_lines_around_method_in_interface = 1
+
+# Gradle Files
+[*.gradle]
+indent_size = 4
+
+[*.gradle.kts]
+indent_size = 4
+
+# YAML Files (Spring Boot Configuration)
+[*.yml]
+indent_size = 2
+
+[*.yaml]
+indent_size = 2
+
+# Properties Files
+[*.properties]
+# No indentation rules for .properties; keep it neutral to avoid IDE auto-indenting values
+
+# JSON Files
+[*.json]
+indent_size = 2
+
+# XML Files (Maven, Spring Config)
+[*.xml]
+indent_size = 2
+ij_xml_line_break_before_tags = true
+
+# Markdown Files
+[*.md]
+trim_trailing_whitespace = false
+max_line_length = off
+
+# SQL Files
+[*.sql]
+indent_size = 2
+ij_sql_use_upper_case_for_keywords = true
