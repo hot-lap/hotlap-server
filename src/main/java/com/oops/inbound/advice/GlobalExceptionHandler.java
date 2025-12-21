@@ -11,23 +11,23 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @Slf4j
 @RestControllerAdvice
 public class GlobalExceptionHandler {
-    @ExceptionHandler(Exception.class)
-    @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-    public ErrorResponse handleException(Exception e) {
-        log.error("[ERROR] Exception -> {}", e.getMessage(), e);
+	@ExceptionHandler(Exception.class)
+	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
+	public ErrorResponse handleException(Exception e) {
+		log.error("[ERROR] Exception -> {}", e.getMessage(), e);
 
-        var type = ErrorCode.INTERNAL_SERVER_ERROR;
+		var type = ErrorCode.INTERNAL_SERVER_ERROR;
 
-        String message = resolveMessage(e, type);
+		String message = resolveMessage(e, type);
 
-        return new ErrorResponse(type.name(), message);
-    }
+		return new ErrorResponse(type.name(), message);
+	}
 
-    private String resolveMessage(Exception e, ErrorCode code) {
-        if (e.getMessage() == null || e.getMessage().isBlank()) {
-            return code.getMessage();
-        }
+	private String resolveMessage(Exception e, ErrorCode code) {
+		if (e.getMessage() == null || e.getMessage().isBlank()) {
+			return code.getMessage();
+		}
 
-        return e.getMessage();
-    }
+		return e.getMessage();
+	}
 }
