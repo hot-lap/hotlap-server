@@ -10,6 +10,7 @@ public enum ErrorCode {
     INVALID_REQUEST_ERROR("잘못된 요청입니다."),
 
     NOT_FOUND_FOO_ERROR("foo를 찾을 수 없습니다."),
+    NOT_FOUND_POST_ERROR("post를 찾을 수 없습니다")
     ;
 
     private final String message;
