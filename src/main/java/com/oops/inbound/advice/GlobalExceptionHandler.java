@@ -1,14 +1,13 @@
 package com.oops.inbound.advice;
 
-import com.oops.common.exception.*;
+import com.oops.common.exception.ApplicationException;
+import com.oops.common.exception.ErrorCode;
 import com.oops.inbound.advice.model.ErrorResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.http.HttpStatus;
-import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
-import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 @Slf4j
@@ -18,17 +17,7 @@ public class GlobalExceptionHandler {
 	@ExceptionHandler(Exception.class)
 	public ErrorResponse handleException(Exception e) {
 		return switch (e) {
-			case NotFoundException nfe -> createErrorResponse(nfe, HttpStatus.NOT_FOUND);
-
-			case AlreadyExistsException aee -> createErrorResponse(aee, HttpStatus.CONFLICT);
-
-			case InvalidRequestException ire -> createErrorResponse(ire, HttpStatus.BAD_REQUEST);
-
-			case BadRequestException bre -> createErrorResponse(bre, HttpStatus.BAD_REQUEST);
-
 			case MethodArgumentNotValidException mae -> createErrorResponse(mae, HttpStatus.BAD_REQUEST);
-
-			case ApplicationException ae -> createErrorResponse(ae, HttpStatus.INTERNAL_SERVER_ERROR);
 
 			default -> {
 				log.error("[ERROR] Unhandled Exception -> {}", e.getMessage(), e);
