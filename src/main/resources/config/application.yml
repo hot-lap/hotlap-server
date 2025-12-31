@@ -49,3 +49,10 @@ springdoc:
 encrypt:
   key: 1sk5s012fl5ldmzz
   algorithm: AES/CBC/PKCS5Padding
+
+# Auth
+auth:
+  jwt:
+    secret: 077d202b70b3e9b84a9cdfa93c8e4e014dd0f407a0f08b43c771eae9b5fda89ece275c9ea9ab6a501882622bcf529dc7c3602e247d7a6709c71ad63abffe6a54
+    access-exp: 10800
+    refresh-exp: 7776000

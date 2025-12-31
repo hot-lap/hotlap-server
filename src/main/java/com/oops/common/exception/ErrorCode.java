@@ -13,6 +13,11 @@ public enum ErrorCode {
 	INTERNAL_SERVER_ERROR("예기치 못한 에러가 발생했습니다."), INVALID_REQUEST_ERROR("잘못된 요청입니다."), BAD_REQUEST_ERROR("부적절한 요청입니다."),
 
 	/**
+	 * User
+	 */
+	NO_AUTHORITY_ERROR("권한이 없습니다."),
+
+	/**
 	 * Validation
 	 */
 	REQUIRED_PARAMETER_MISSING_ERROR("필수 파라미터가 누락되었습니다."),
