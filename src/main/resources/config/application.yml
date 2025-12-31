@@ -44,3 +44,8 @@ springdoc:
   swagger-ui:
     enabled: true   # UI 활성화
   override-with-generic-response: false  # 일반화된 응답 사용 여부
+
+# Encrypt
+encrypt:
+  key: 1sk5s012fl5ldmzz
+  algorithm: AES/CBC/PKCS5Padding
