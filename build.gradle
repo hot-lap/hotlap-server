@@ -45,6 +45,9 @@ dependencies {
     runtimeOnly 'com.github.therapi:therapi-runtime-javadoc-scribe:0.15.0'
     annotationProcessor 'com.github.therapi:therapi-runtime-javadoc-scribe:0.15.0'
 
+    /** jwt */
+    implementation("com.auth0:java-jwt:4.4.0")
+
     /** test */
     testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
