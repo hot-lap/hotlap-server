@@ -13,9 +13,10 @@ public enum ErrorCode {
 	INTERNAL_SERVER_ERROR("예기치 못한 에러가 발생했습니다."), INVALID_REQUEST_ERROR("잘못된 요청입니다."), BAD_REQUEST_ERROR("부적절한 요청입니다."),
 
 	/**
-	 * User
+	 * Auth
 	 */
-	NO_AUTHORITY_ERROR("권한이 없습니다."),
+	NO_AUTHORITY_ERROR("권한이 없습니다."), INVALID_TOKEN_ERROR("유효한 토큰이 아닙니다."),
+	INVALID_REFRESH_TOKEN_ERROR("유효한 리프레시 토큰이 아닙니다."),
 
 	/**
 	 * Validation
