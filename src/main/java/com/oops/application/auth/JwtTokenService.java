@@ -12,6 +12,7 @@ import com.oops.domain.auth.model.AuthUserTokenPayload;
 import com.oops.domain.auth.model.RefreshToken;
 import com.oops.domain.auth.model.TokenContext;
 import com.oops.outbound.mysql.auth.repository.RefreshTokenJpaRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -38,26 +39,38 @@ public class JwtTokenService {
 
 	private final ObjectMapper mapper;
 
-	private final Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
+	private JWTVerifier accessJwtVerifier;
 
-	private final JWTVerifier accessJwtVerifier = JWT.require(algorithm)
-		.withIssuer(jwtProperties.getIssuer())
-		.withAudience(jwtProperties.getAudience())
-		.withClaim("type", ACCESS_TOKEN)
-		.build();
+	private JWTVerifier accessJwtVerifierWithExtendedExpiredAt;
 
-	private final JWTVerifier accessJwtVerifierWithExtendedExpiredAt = JWT.require(algorithm)
-		.withIssuer(jwtProperties.getIssuer())
-		.withAudience(jwtProperties.getAudience())
-		.withClaim("type", ACCESS_TOKEN)
-		.acceptExpiresAt(jwtProperties.getRefreshExp())
-		.build();
+	private JWTVerifier refreshJwtVerifier;
 
-	private final JWTVerifier refreshJwtVerifier = JWT.require(algorithm)
-		.withIssuer(jwtProperties.getIssuer())
-		.withAudience(jwtProperties.getAudience())
-		.withClaim("type", REFRESH_TOKEN)
-		.build();
+	/**
+	 * Spring DI 완료 후 안전하게 초기화
+	 */
+	@PostConstruct
+	private void init() {
+		Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
+
+		accessJwtVerifier = JWT.require(algorithm)
+			.withIssuer(jwtProperties.getIssuer())
+			.withAudience(jwtProperties.getAudience())
+			.withClaim("type", ACCESS_TOKEN)
+			.build();
+
+		accessJwtVerifierWithExtendedExpiredAt = JWT.require(algorithm)
+			.withIssuer(jwtProperties.getIssuer())
+			.withAudience(jwtProperties.getAudience())
+			.withClaim("type", ACCESS_TOKEN)
+			.acceptExpiresAt(jwtProperties.getRefreshExp())
+			.build();
+
+		refreshJwtVerifier = JWT.require(algorithm)
+			.withIssuer(jwtProperties.getIssuer())
+			.withAudience(jwtProperties.getAudience())
+			.withClaim("type", REFRESH_TOKEN)
+			.build();
+	}
 
 	private String createToken(Long id, LocalDateTime expiredAt, String type) {
 		Instant instant = expiredAt.atZone(ZoneId.systemDefault()).toInstant();
@@ -131,8 +144,7 @@ public class JwtTokenService {
 	}
 
 	private String decodePayload(String base64Payload) {
-		byte[] decoded = Base64.getDecoder().decode(base64Payload);
-		return new String(decoded, StandardCharsets.UTF_8);
+		return new String(Base64.getDecoder().decode(base64Payload), StandardCharsets.UTF_8);
 	}
 
 }
