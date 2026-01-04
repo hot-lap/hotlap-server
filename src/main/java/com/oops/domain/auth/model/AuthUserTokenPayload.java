@@ -17,4 +17,8 @@ public class AuthUserTokenPayload {
 
 	private final String type;
 
+	public boolean isAccessToken() {
+		return type.equals("accessToken");
+	}
+
 }

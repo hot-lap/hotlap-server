@@ -19,6 +19,11 @@ public enum ErrorCode {
 	INVALID_REFRESH_TOKEN_ERROR("유효한 리프레시 토큰이 아닙니다."),
 
 	/**
+	 * User
+	 */
+	NOT_FOUND_USER_ERROR("유저 정보를 찾을 수 없습니다."),
+
+	/**
 	 * Validation
 	 */
 	REQUIRED_PARAMETER_MISSING_ERROR("필수 파라미터가 누락되었습니다."),

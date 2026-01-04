@@ -9,9 +9,7 @@ import com.oops.common.exception.InvalidTokenException;
 import com.oops.config.jwt.JwtConfig;
 import com.oops.domain.auth.model.AuthUserToken;
 import com.oops.domain.auth.model.AuthUserTokenPayload;
-import com.oops.domain.auth.model.RefreshToken;
 import com.oops.domain.auth.model.TokenContext;
-import com.oops.outbound.mysql.auth.repository.RefreshTokenJpaRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -34,8 +32,6 @@ public class JwtTokenService {
 	private static final String REFRESH_TOKEN = "refreshToken";
 
 	private final JwtConfig.JwtProperties jwtProperties;
-
-	private final RefreshTokenJpaRepository refreshTokenRepository;
 
 	private final ObjectMapper mapper;
 
@@ -133,14 +129,6 @@ public class JwtTokenService {
 		catch (Exception e) {
 			throw new InvalidTokenException(ErrorCode.INVALID_REFRESH_TOKEN_ERROR);
 		}
-	}
-
-	public void deleteByKey(String key) {
-		refreshTokenRepository.deleteByRefreshToken(key);
-	}
-
-	public void save(RefreshToken token) {
-		refreshTokenRepository.save(token);
 	}
 
 	private String decodePayload(String base64Payload) {
