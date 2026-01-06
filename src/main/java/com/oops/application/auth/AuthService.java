@@ -3,11 +3,12 @@ package com.oops.application.auth;
 import com.oops.common.exception.ErrorCode;
 import com.oops.common.exception.InvalidTokenException;
 import com.oops.common.exception.NoAuthorityException;
-import com.oops.domain.auth.model.AuthContext;
+import com.oops.domain.auth.model.AuthContextImpl;
 import com.oops.domain.auth.model.AuthUser;
+import com.oops.domain.auth.model.AuthUserImpl;
 import com.oops.domain.auth.model.AuthUserToken;
 import com.oops.domain.auth.model.RefreshToken;
-import com.oops.domain.auth.model.TokenContext;
+import com.oops.application.auth.model.TokenContext;
 import com.oops.domain.auth.repository.RefreshTokenCommandRepository;
 import com.oops.domain.user.repository.UserQueryRepository;
 import com.oops.inbound.controller.auth.model.request.TokenRefreshRequest;
@@ -36,7 +37,7 @@ public class AuthService {
 
 		var user = userQueryRepository.findByIdOrThrow(payload.getId());
 
-		return new AuthUser.Default(user.getId(), new AuthContext.Default(user.getName()));
+		return new AuthUserImpl(user.getId(), new AuthContextImpl(user.getName()));
 	}
 
 	public Long getUidFromTokenOrNull(AuthUserToken token) {
@@ -74,7 +75,7 @@ public class AuthService {
 
 		var tokenDto = jwtTokenService.generateAccessAndRefreshToken(refreshPayload.getId());
 
-		refreshTokenCommandRepository.save(new RefreshToken(refreshPayload.getId(), tokenDto.getRefreshToken()));
+		refreshTokenCommandRepository.save(new RefreshToken(refreshPayload.getId(), tokenDto.refreshToken()));
 
 		return tokenDto;
 	}
