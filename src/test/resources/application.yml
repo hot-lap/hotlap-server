@@ -26,8 +26,11 @@ auth:
     audience: oops-api
     access-exp: 10800
     refresh-exp: 7776000
-  encryption:
-    key: 1234567890123456
+
+# Encrypt
+encrypt:
+  key: 1234567890123456
+  algorithm: AES/CBC/PKCS5Padding
 
 # OAuth
 oauth:
