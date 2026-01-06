@@ -147,7 +147,7 @@ public class JwtTokenService {
 	}
 
 	private String decodePayload(String base64Payload) {
-		return new String(Base64.getDecoder().decode(base64Payload), StandardCharsets.UTF_8);
+		return new String(Base64.getUrlDecoder().decode(base64Payload), StandardCharsets.UTF_8);
 	}
 
 }
