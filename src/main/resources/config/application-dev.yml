@@ -10,3 +10,18 @@ spring:
     hikari:
       minimum-idle: 10
       maximum-pool-size: 20
+      connection-timeout: 30000
+      idle-timeout: 600000
+      max-lifetime: 1800000
+      leak-detection-threshold: 60000
+  jpa:
+    properties:
+      hibernate:
+        format_sql: true
+        show_sql: true
+
+logging:
+  level:
+    com.oops: DEBUG
+    org.springframework.web: DEBUG
+    org.hibernate.SQL: DEBUG

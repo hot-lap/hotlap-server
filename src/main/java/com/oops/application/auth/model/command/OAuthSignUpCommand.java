@@ -1,4 +1,6 @@
 package com.oops.application.auth.model.command;
 
-public record OAuthSignUpCommand(String accessToken) {
+import com.oops.domain.user.model.vo.OAuthProvider;
+
+public record OAuthSignUpCommand(OAuthProvider provider, String accessToken) {
 }

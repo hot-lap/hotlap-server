@@ -32,7 +32,7 @@ public class OAuthController {
 	@ResponseStatus(HttpStatus.CREATED)
 	public ResponseDto<AuthResponse> signup(@PathVariable String provider,
 			@RequestBody @Valid OAuthSignUpRequest request) {
-		var response = oAuthFacade.signUp(request.toCommand());
+		var response = oAuthFacade.signUp(request.toCommand(provider));
 		return ResponseDto.wrap(AuthResponse.from(response));
 	}
 

@@ -1,7 +1,13 @@
 package com.oops.common.exception;
 
+import org.springframework.http.HttpStatus;
+
 public class InvalidRequestException extends ApplicationException {
-    public InvalidRequestException(ErrorCode errorCode) {
-        super(errorCode);
-    }
+
+	private static final HttpStatus status = HttpStatus.BAD_REQUEST;
+
+	public InvalidRequestException(ErrorCode errorCode) {
+		super(errorCode, status);
+	}
+
 }

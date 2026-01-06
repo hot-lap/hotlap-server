@@ -1,6 +1,7 @@
 package com.oops.domain.user.model;
 
-import com.oops.common.encryption.EncryptConverter;
+import com.oops.common.encrypt.EncryptConverter;
+import com.oops.common.encrypt.EncryptData;
 import com.oops.outbound.mysql.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Convert;
@@ -15,7 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "users")
+@Table(name = "user")
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,12 +25,14 @@ public class User extends BaseEntity {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "user_id")
+	@Column(name = "id")
 	private Long id = 0L;
 
 	@Convert(converter = EncryptConverter.class)
-	private String email;
+	private EncryptData email;
 
 	private String name;
+
+	private String nickname;
 
 }

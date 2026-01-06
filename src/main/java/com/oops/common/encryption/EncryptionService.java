@@ -1,6 +1,7 @@
 package com.oops.common.encryption;
 
 import com.oops.common.exception.EncryptionException;
+import com.oops.common.exception.ErrorCode;
 import com.oops.config.encryption.EncryptionConfig;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -35,8 +36,7 @@ public class EncryptionService {
 			random.nextBytes(iv);
 
 			Cipher cipher = Cipher.getInstance(ALGORITHM);
-			SecretKeySpec keySpec = new SecretKeySpec(encryptionConfig.key().getBytes(StandardCharsets.UTF_8),
-					"AES");
+			SecretKeySpec keySpec = new SecretKeySpec(encryptionConfig.key().getBytes(StandardCharsets.UTF_8), "AES");
 			GCMParameterSpec gcmSpec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
 
 			cipher.init(Cipher.ENCRYPT_MODE, keySpec, gcmSpec);
@@ -50,7 +50,7 @@ public class EncryptionService {
 			return Base64.getEncoder().encodeToString(result);
 		}
 		catch (Exception e) {
-			throw new EncryptionException("암호화 실패: " + e.getMessage());
+			throw new EncryptionException(ErrorCode.ENCRYPTION_ERROR);
 		}
 	}
 
@@ -71,8 +71,7 @@ public class EncryptionService {
 			System.arraycopy(decoded, GCM_IV_LENGTH, encrypted, 0, encrypted.length);
 
 			Cipher cipher = Cipher.getInstance(ALGORITHM);
-			SecretKeySpec keySpec = new SecretKeySpec(encryptionConfig.key().getBytes(StandardCharsets.UTF_8),
-					"AES");
+			SecretKeySpec keySpec = new SecretKeySpec(encryptionConfig.key().getBytes(StandardCharsets.UTF_8), "AES");
 			GCMParameterSpec gcmSpec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
 
 			cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmSpec);
@@ -81,7 +80,7 @@ public class EncryptionService {
 			return new String(decrypted, StandardCharsets.UTF_8);
 		}
 		catch (Exception e) {
-			throw new EncryptionException("복호화 실패: " + e.getMessage());
+			throw new EncryptionException(ErrorCode.DECRYPTION_ERROR);
 		}
 	}
 

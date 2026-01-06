@@ -15,8 +15,7 @@ public class OAuthUserInquiryService {
 	private final OAuthUserQueryRepository oAuthUserQueryRepository;
 
 	public Optional<OAuthUserResult> findByProviderAndOauthId(OAuthProvider provider, String oauthId) {
-		return oAuthUserQueryRepository.findByProviderAndOauthId(provider, oauthId)
-			.map(OAuthUserResult::from);
+		return oAuthUserQueryRepository.findByProviderAndOauthId(provider, oauthId).map(OAuthUserResult::from);
 	}
 
 	public boolean existsByProviderAndOauthId(OAuthProvider provider, String oauthId) {

@@ -2,16 +2,21 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '4.0.0'
     id 'io.spring.dependency-management' version '1.1.7'
+    id 'io.spring.javaformat' version '0.0.47'
 }
 
 group = 'com.oops'
-version = '0.0.1-SNAPSHOT'
+version = '0.0.3-SNAPSHOT'
 description = 'oops server'
 
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(25)
     }
+}
+
+compileJava {
+    options.compilerArgs += ['-parameters']
 }
 
 repositories {
@@ -21,17 +26,15 @@ repositories {
 dependencies {
     /** spring */
     implementation 'org.springframework.boot:spring-boot-starter-webmvc'
-    implementation 'org.springframework.boot:spring-boot-starter-web'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
+    implementation 'org.springframework.boot:spring-boot-starter-validation'
+
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
 
     /** database */
     runtimeOnly 'com.mysql:mysql-connector-j'
-
-    /** jwt */
-    implementation 'com.auth0:java-jwt:4.5.0'
 
     /** encryption */
     implementation 'commons-codec:commons-codec:1.19.0'
@@ -48,11 +51,14 @@ dependencies {
     runtimeOnly 'com.github.therapi:therapi-runtime-javadoc-scribe:0.15.0'
     annotationProcessor 'com.github.therapi:therapi-runtime-javadoc-scribe:0.15.0'
 
+    /** jwt */
+    implementation("com.auth0:java-jwt:4.4.0")
+
     /** test */
     testImplementation 'org.springframework.boot:spring-boot-starter-data-jpa-test'
     testImplementation 'org.springframework.boot:spring-boot-starter-webmvc-test'
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-    testRuntimeOnly 'com.h2database:h2'
+    testImplementation 'com.h2database:h2'
 }
 
 tasks.named('test') {

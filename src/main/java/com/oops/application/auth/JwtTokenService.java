@@ -1,64 +1,153 @@
 package com.oops.application.auth;
 
 import com.auth0.jwt.JWT;
+import com.auth0.jwt.JWTVerifier;
 import com.auth0.jwt.algorithms.Algorithm;
-import com.auth0.jwt.exceptions.JWTVerificationException;
-import com.auth0.jwt.interfaces.DecodedJWT;
-import com.oops.application.auth.model.TokenContext;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oops.common.exception.ErrorCode;
-import com.oops.common.exception.JwtException;
+import com.oops.common.exception.InvalidTokenException;
+import com.oops.application.auth.model.TokenContext;
 import com.oops.config.auth.JwtConfig;
+import com.oops.domain.auth.model.AuthUserToken;
+import com.oops.domain.auth.model.AuthUserTokenPayload;
+import com.oops.domain.auth.model.RefreshToken;
+import com.oops.outbound.mysql.auth.repository.RefreshTokenJpaRepository;
+import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.nio.charset.StandardCharsets;
 import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.util.Base64;
+import java.util.Date;
 
+@Slf4j
 @Service
 @RequiredArgsConstructor
 public class JwtTokenService {
 
-	private final static String ACCESS_TOKEN_TYPE = "access";
+	private static final String ACCESS_TOKEN = "accessToken";
 
-	private final static String REFRESH_TOKEN_TYPE = "refresh";
+	private static final String REFRESH_TOKEN = "refreshToken";
 
-	private final JwtConfig config;
+	private final JwtConfig jwtConfig;
 
-	public TokenContext generateTokens(Long userId) {
-		var now = Instant.now();
-		var algorithm = Algorithm.HMAC256(config.secret());
-		Instant accessTokenExpiresAt = now.plusSeconds(config.accessExp());
-		Instant refreshTokenExpiresAt = now.plusSeconds(config.refreshExp());
+	private final RefreshTokenJpaRepository refreshTokenRepository;
 
-		var accessToken = generateToken(userId, now, accessTokenExpiresAt, algorithm, ACCESS_TOKEN_TYPE);
-		var refreshToken = generateToken(userId, now, refreshTokenExpiresAt, algorithm, REFRESH_TOKEN_TYPE);
+	private final ObjectMapper mapper;
 
-		return new TokenContext(accessToken, accessTokenExpiresAt, refreshToken, refreshTokenExpiresAt);
+	private JWTVerifier accessJwtVerifier;
+
+	private JWTVerifier accessJwtVerifierWithExtendedExpiredAt;
+
+	private JWTVerifier refreshJwtVerifier;
+
+	/**
+	 * Spring DI 완료 후 안전하게 초기화
+	 */
+	@PostConstruct
+	private void init() {
+		Algorithm algorithm = Algorithm.HMAC256(jwtConfig.secret());
+
+		accessJwtVerifier = JWT.require(algorithm)
+			.withIssuer(jwtConfig.issuer())
+			.withAudience(jwtConfig.audience())
+			.withClaim("type", ACCESS_TOKEN)
+			.build();
+
+		accessJwtVerifierWithExtendedExpiredAt = JWT.require(algorithm)
+			.withIssuer(jwtConfig.issuer())
+			.withAudience(jwtConfig.audience())
+			.withClaim("type", ACCESS_TOKEN)
+			.acceptExpiresAt(jwtConfig.refreshExp())
+			.build();
+
+		refreshJwtVerifier = JWT.require(algorithm)
+			.withIssuer(jwtConfig.issuer())
+			.withAudience(jwtConfig.audience())
+			.withClaim("type", REFRESH_TOKEN)
+			.build();
 	}
 
-	public DecodedJWT verifyAccessToken(String token) {
-		try {
-			return JWT.require(Algorithm.HMAC256(config.secret()))
-				.withIssuer(config.issuer())
-				.withAudience(config.audience())
-				.withClaim("type", ACCESS_TOKEN_TYPE)
-				.build()
-				.verify(token);
-		}
-		catch (JWTVerificationException e) {
-			throw new JwtException(ErrorCode.INVALID_ACCESS_TOKEN_ERROR);
-		}
-	}
+	private String createToken(Long id, LocalDateTime expiredAt, String type) {
+		Instant instant = expiredAt.atZone(ZoneId.systemDefault()).toInstant();
 
-	private String generateToken(Long userId, Instant now, Instant accessTokenExpiresAt, Algorithm algorithm,
-			String tokenType) {
 		return JWT.create()
-			.withIssuer(config.issuer())
-			.withAudience(config.audience())
-			.withSubject(userId.toString())
-			.withClaim("type", tokenType)
-			.withIssuedAt(now)
-			.withExpiresAt(accessTokenExpiresAt)
-			.sign(algorithm);
+			.withIssuer(jwtConfig.issuer())
+			.withAudience(jwtConfig.audience())
+			.withClaim("id", id)
+			.withClaim("type", type)
+			.withExpiresAt(Date.from(instant))
+			.sign(Algorithm.HMAC256(jwtConfig.secret()));
+	}
+
+	public AuthUserTokenPayload verifyToken(AuthUserToken token) {
+		try {
+			String payload = decodePayload(accessJwtVerifier.verify(token.getValue()).getPayload());
+			return mapper.readValue(payload, AuthUserTokenPayload.class);
+		}
+		catch (Exception e) {
+			log.warn("Access token verification failed: {}", e.getMessage());
+			throw new InvalidTokenException(ErrorCode.INVALID_TOKEN_ERROR);
+		}
+	}
+
+	public AuthUserTokenPayload decodeToken(AuthUserToken token) {
+		try {
+			String payload = decodePayload(JWT.decode(token.getValue()).getPayload());
+			return mapper.readValue(payload, AuthUserTokenPayload.class);
+		}
+		catch (Exception e) {
+			throw new InvalidTokenException(ErrorCode.INVALID_TOKEN_ERROR);
+		}
+	}
+
+	public AuthUserTokenPayload verifyTokenWithExtendedExpiredAt(String token) {
+		try {
+			String payload = decodePayload(accessJwtVerifierWithExtendedExpiredAt.verify(token).getPayload());
+			return mapper.readValue(payload, AuthUserTokenPayload.class);
+		}
+		catch (Exception e) {
+			throw new InvalidTokenException(ErrorCode.INVALID_TOKEN_ERROR);
+		}
+	}
+
+	public TokenContext generateAccessAndRefreshToken(Long uid) {
+		LocalDateTime now = LocalDateTime.now();
+
+		LocalDateTime accessExp = now.plusSeconds(jwtConfig.accessExp());
+		LocalDateTime refreshExp = now.plusSeconds(jwtConfig.refreshExp());
+
+		Instant accessExpInstant = accessExp.atZone(ZoneId.systemDefault()).toInstant();
+		Instant refreshExpInstant = refreshExp.atZone(ZoneId.systemDefault()).toInstant();
+
+		return new TokenContext(createToken(uid, accessExp, ACCESS_TOKEN), accessExpInstant,
+				createToken(uid, refreshExp, REFRESH_TOKEN), refreshExpInstant);
+	}
+
+	public AuthUserTokenPayload verifyRefreshToken(String refreshToken) {
+		try {
+			String payload = decodePayload(refreshJwtVerifier.verify(refreshToken).getPayload());
+			return mapper.readValue(payload, AuthUserTokenPayload.class);
+		}
+		catch (Exception e) {
+			throw new InvalidTokenException(ErrorCode.INVALID_REFRESH_TOKEN_ERROR);
+		}
+	}
+
+	public void deleteByKey(String key) {
+		refreshTokenRepository.deleteByRefreshToken(key);
+	}
+
+	public void save(RefreshToken token) {
+		refreshTokenRepository.save(token);
+	}
+
+	private String decodePayload(String base64Payload) {
+		return new String(Base64.getDecoder().decode(base64Payload), StandardCharsets.UTF_8);
 	}
 
 }

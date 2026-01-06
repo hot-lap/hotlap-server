@@ -22,7 +22,7 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OAuthFacade {
 
-	private final GoogleOAuthService googleOAuthService;
+	private final OAuthServiceProvider oAuthServiceProvider;
 
 	private final UserInquiryService userInquiryService;
 
@@ -36,34 +36,34 @@ public class OAuthFacade {
 
 	@Transactional
 	public AuthResult signUp(OAuthSignUpCommand command) {
-		var oauthInfo = googleOAuthService.getOAuthUserInfo(command.accessToken());
+		OAuthService oauthService = oAuthServiceProvider.getService(command.provider());
+		var oauthInfo = oauthService.getOAuthUserInfo(command.accessToken());
 
-		boolean isExists = oAuthUserInquiryService.existsByProviderAndOauthId(OAuthProvider.GOOGLE,
-				oauthInfo.oauthId());
+		boolean isExists = oAuthUserInquiryService.existsByProviderAndOauthId(command.provider(), oauthInfo.oauthId());
 
 		var user = isExists
-				? oAuthUserInquiryService.findByProviderAndOauthId(OAuthProvider.GOOGLE, oauthInfo.oauthId())
+				? oAuthUserInquiryService.findByProviderAndOauthId(command.provider(), oauthInfo.oauthId())
 					.map(oauthUserResult -> userInquiryService.findById(oauthUserResult.userId()))
 					.orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_USER_FOR_OAUTH_ERROR))
-				: registerNewOAuthUser(oauthInfo);
+				: registerNewOAuthUser(command.provider(), oauthInfo);
 
-		var tokens = jwtTokenService.generateTokens(user.id());
+		var tokens = jwtTokenService.generateAccessAndRefreshToken(user.id());
 
 		return new AuthResult(user.id(), tokens);
 	}
 
-	private UserResult registerNewOAuthUser(OAuthUserInfoModel oauthInfo) {
+	private UserResult registerNewOAuthUser(OAuthProvider provider, OAuthUserInfoModel oauthInfo) {
 		var userResult = userRegisterService.register(new UserRegisterCommand(oauthInfo.email(), oauthInfo.name()));
 
-		oAuthUserRegisterService.register(
-				new OAuthUserRegisterCommand(OAuthProvider.GOOGLE, oauthInfo.oauthId(), userResult.id()));
+		oAuthUserRegisterService.register(new OAuthUserRegisterCommand(provider, oauthInfo.oauthId(), userResult.id()));
 
 		return userResult;
 	}
 
 	public OAuthCheckResult checkSignUp(String provider, String accessToken) {
 		var oauthProvider = OAuthProvider.from(provider);
-		var oauthInfo = googleOAuthService.getOAuthUserInfo(accessToken);
+		OAuthService oauthService = oAuthServiceProvider.getService(oauthProvider);
+		var oauthInfo = oauthService.getOAuthUserInfo(accessToken);
 
 		boolean exists = oAuthUserInquiryService.existsByProviderAndOauthId(oauthProvider, oauthInfo.oauthId());
 

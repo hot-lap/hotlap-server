@@ -9,9 +9,11 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ResponseDto<T> {
-    private T data;
 
-    public static <T> ResponseDto<T> wrap(T data) {
-        return new ResponseDto<T>(data);
-    }
+	private T data;
+
+	public static <T> ResponseDto<T> wrap(T data) {
+		return new ResponseDto<T>(data);
+	}
+
 }
