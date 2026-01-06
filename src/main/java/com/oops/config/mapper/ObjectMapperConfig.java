@@ -14,7 +14,8 @@ public class ObjectMapperConfig {
 	@Bean
 	@Primary
 	public ObjectMapper objectMapper() {
-		return new ObjectMapper().setSerializationInclusion(JsonInclude.Include.NON_NULL)
+		return new ObjectMapper().setDefaultPropertyInclusion(
+				JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL))
 			.registerModule(new JavaTimeModule())
 			.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
 	}
