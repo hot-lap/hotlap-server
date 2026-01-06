@@ -27,7 +27,7 @@ public class OAuthUser extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "oauth_user_id")
-	private Long id = 0L;
+	private Long id;
 
 	@Enumerated(EnumType.STRING)
 	@Column(name = "provider", nullable = false, length = 20)

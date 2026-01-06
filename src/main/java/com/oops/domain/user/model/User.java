@@ -26,7 +26,7 @@ public class User extends BaseEntity {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "id")
-	private Long id = 0L;
+	private Long id;
 
 	@Convert(converter = EncryptConverter.class)
 	private EncryptData email;
