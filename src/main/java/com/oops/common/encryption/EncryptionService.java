@@ -2,7 +2,7 @@ package com.oops.common.encryption;
 
 import com.oops.common.exception.EncryptionException;
 import com.oops.common.exception.ErrorCode;
-import com.oops.config.encryption.EncryptionConfig;
+import com.oops.config.encryption.EncryptProperties;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,7 @@ import java.util.Base64;
 @RequiredArgsConstructor
 public class EncryptionService {
 
-	private final EncryptionConfig encryptionConfig;
+	private final EncryptProperties encryptProperties;
 
 	private static final String ALGORITHM = "AES/GCM/NoPadding";
 
@@ -36,7 +36,7 @@ public class EncryptionService {
 			random.nextBytes(iv);
 
 			Cipher cipher = Cipher.getInstance(ALGORITHM);
-			SecretKeySpec keySpec = new SecretKeySpec(encryptionConfig.key().getBytes(StandardCharsets.UTF_8), "AES");
+			SecretKeySpec keySpec = new SecretKeySpec(encryptProperties.key().getBytes(StandardCharsets.UTF_8), "AES");
 			GCMParameterSpec gcmSpec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
 
 			cipher.init(Cipher.ENCRYPT_MODE, keySpec, gcmSpec);
@@ -71,7 +71,7 @@ public class EncryptionService {
 			System.arraycopy(decoded, GCM_IV_LENGTH, encrypted, 0, encrypted.length);
 
 			Cipher cipher = Cipher.getInstance(ALGORITHM);
-			SecretKeySpec keySpec = new SecretKeySpec(encryptionConfig.key().getBytes(StandardCharsets.UTF_8), "AES");
+			SecretKeySpec keySpec = new SecretKeySpec(encryptProperties.key().getBytes(StandardCharsets.UTF_8), "AES");
 			GCMParameterSpec gcmSpec = new GCMParameterSpec(GCM_TAG_LENGTH, iv);
 
 			cipher.init(Cipher.DECRYPT_MODE, keySpec, gcmSpec);
