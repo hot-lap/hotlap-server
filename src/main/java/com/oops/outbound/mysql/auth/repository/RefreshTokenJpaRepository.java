@@ -9,6 +9,4 @@ public interface RefreshTokenJpaRepository extends JpaRepository<RefreshToken, L
 
 	void deleteByRefreshToken(String refreshToken);
 
-	void deleteByUid(Long uid);
-
 }

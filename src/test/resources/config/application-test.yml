@@ -35,3 +35,8 @@ spring:
       hibernate:
         format_sql: true
         show_sql: true
+
+# Encrypt
+encrypt:
+  key: 1234567890123456
+  algorithm: AES/CBC/PKCS5Padding

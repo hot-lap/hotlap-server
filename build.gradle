@@ -36,9 +36,16 @@ dependencies {
     /** database */
     runtimeOnly 'com.mysql:mysql-connector-j'
 
+    /** encryption */
+    implementation 'commons-codec:commons-codec:1.19.0'
+    implementation 'org.springframework.security:spring-security-crypto'
+
     /** lombok */
     compileOnly 'org.projectlombok:lombok'
     annotationProcessor 'org.projectlombok:lombok'
+
+    // Problem Details 고려..
+//    implementation 'org.zalando:problem-spring-web:0.29.1'
 
     /** swagger */
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:3.0.0'

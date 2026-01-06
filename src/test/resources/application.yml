@@ -1,0 +1,40 @@
+spring:
+  datasource:
+    driver-class-name: org.h2.Driver
+    url: jdbc:h2:mem:testdb;MODE=MySQL;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+    username: sa
+    password:
+
+  jpa:
+    hibernate:
+      ddl-auto: create-drop
+    show-sql: true
+    properties:
+      hibernate:
+        format_sql: true
+        dialect: org.hibernate.dialect.H2Dialect
+
+  sql:
+    init:
+      mode: never
+
+# Auth
+auth:
+  jwt:
+    secret: test-secret-key-for-jwt-token-signing-minimum-256-bits-required
+    issuer: oops-api
+    audience: oops-api
+    access-exp: 10800
+    refresh-exp: 7776000
+
+# Encrypt
+encrypt:
+  key: 1234567890123456
+  algorithm: AES/CBC/PKCS5Padding
+
+# OAuth
+oauth:
+  google:
+    client-id: test-client-id
+    client-secret: test-client-secret
+    redirect-uri: http://localhost:8080/api/v1/oauth/google/callback

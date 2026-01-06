@@ -26,9 +26,9 @@ public class Encryptor {
 		return mapper.readValue(decryptedData, clazz);
 	}
 
-	public <T> EncryptData enc(T plainData) throws Exception {
+	public <T> String enc(T plainData) throws Exception {
 		String stringPlainData = mapper.writeValueAsString(plainData);
-		return new EncryptData(encrypt(stringPlainData));
+		return encrypt(stringPlainData);
 	}
 
 	public String encrypt(String text) throws Exception {

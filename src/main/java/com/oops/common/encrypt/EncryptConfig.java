@@ -1,45 +1,20 @@
 package com.oops.common.encrypt;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.boot.context.properties.ConfigurationProperties;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import com.oops.config.encryption.EncryptProperties;
 
 @Slf4j
 @Configuration
-@EnableConfigurationProperties(EncryptConfig.EncryptProperty.class)
+@EnableConfigurationProperties(EncryptProperties.class)
 public class EncryptConfig {
 
-	@ConfigurationProperties(prefix = "encrypt")
-	public static class EncryptProperty {
-
-		private String key;
-
-		private String algorithm;
-
-		public String getKey() {
-			return key;
-		}
-
-		public void setKey(String key) {
-			this.key = key;
-		}
-
-		public String getAlgorithm() {
-			return algorithm;
-		}
-
-		public void setAlgorithm(String algorithm) {
-			this.algorithm = algorithm;
-		}
-
-	}
-
 	@Bean
-	public Encryptor encryptor(EncryptProperty property) {
-		log.info("initialized encryptor. key: {} algorithm: {}", property.getKey(), property.getAlgorithm());
-		return new Encryptor(property.getKey(), property.getAlgorithm());
+	public Encryptor encryptor(EncryptProperties properties) {
+		log.info("initialized encryptor. key: {} algorithm: {}", properties.key(), properties.algorithm());
+		return new Encryptor(properties.key(), properties.algorithm());
 	}
 
 }

@@ -1,10 +1,7 @@
 package com.oops.domain.user.model;
 
-import com.oops.common.encrypt.EncryptConverter;
-import com.oops.common.encrypt.EncryptData;
 import com.oops.outbound.mysql.common.BaseEntity;
 import jakarta.persistence.Column;
-import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,8 +28,7 @@ public class CredentialUser extends BaseEntity {
 
 	private String username;
 
-	@Column(name = "enc_password")
-	@Convert(converter = EncryptConverter.class)
-	private EncryptData encPassword;
+	@Column(name = "enc_password", nullable = false)
+	private String passwordHash;
 
 }

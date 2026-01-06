@@ -6,10 +6,12 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.oops.common.exception.ErrorCode;
 import com.oops.common.exception.InvalidTokenException;
-import com.oops.config.jwt.JwtConfig;
+import com.oops.application.auth.model.TokenContext;
+import com.oops.config.auth.JwtConfig;
 import com.oops.domain.auth.model.AuthUserToken;
 import com.oops.domain.auth.model.AuthUserTokenPayload;
-import com.oops.domain.auth.model.TokenContext;
+import com.oops.domain.auth.model.RefreshToken;
+import com.oops.outbound.mysql.auth.repository.RefreshTokenJpaRepository;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +33,9 @@ public class JwtTokenService {
 
 	private static final String REFRESH_TOKEN = "refreshToken";
 
-	private final JwtConfig.JwtProperties jwtProperties;
+	private final JwtConfig jwtConfig;
+
+	private final RefreshTokenJpaRepository refreshTokenRepository;
 
 	private final ObjectMapper mapper;
 
@@ -46,24 +50,24 @@ public class JwtTokenService {
 	 */
 	@PostConstruct
 	private void init() {
-		Algorithm algorithm = Algorithm.HMAC256(jwtProperties.getSecret());
+		Algorithm algorithm = Algorithm.HMAC256(jwtConfig.secret());
 
 		accessJwtVerifier = JWT.require(algorithm)
-			.withIssuer(jwtProperties.getIssuer())
-			.withAudience(jwtProperties.getAudience())
+			.withIssuer(jwtConfig.issuer())
+			.withAudience(jwtConfig.audience())
 			.withClaim("type", ACCESS_TOKEN)
 			.build();
 
 		accessJwtVerifierWithExtendedExpiredAt = JWT.require(algorithm)
-			.withIssuer(jwtProperties.getIssuer())
-			.withAudience(jwtProperties.getAudience())
+			.withIssuer(jwtConfig.issuer())
+			.withAudience(jwtConfig.audience())
 			.withClaim("type", ACCESS_TOKEN)
-			.acceptExpiresAt(jwtProperties.getRefreshExp())
+			.acceptExpiresAt(jwtConfig.refreshExp())
 			.build();
 
 		refreshJwtVerifier = JWT.require(algorithm)
-			.withIssuer(jwtProperties.getIssuer())
-			.withAudience(jwtProperties.getAudience())
+			.withIssuer(jwtConfig.issuer())
+			.withAudience(jwtConfig.audience())
 			.withClaim("type", REFRESH_TOKEN)
 			.build();
 	}
@@ -72,12 +76,12 @@ public class JwtTokenService {
 		Instant instant = expiredAt.atZone(ZoneId.systemDefault()).toInstant();
 
 		return JWT.create()
-			.withIssuer(jwtProperties.getIssuer())
-			.withAudience(jwtProperties.getAudience())
+			.withIssuer(jwtConfig.issuer())
+			.withAudience(jwtConfig.audience())
 			.withClaim("id", id)
 			.withClaim("type", type)
 			.withExpiresAt(Date.from(instant))
-			.sign(Algorithm.HMAC256(jwtProperties.getSecret()));
+			.sign(Algorithm.HMAC256(jwtConfig.secret()));
 	}
 
 	public AuthUserTokenPayload verifyToken(AuthUserToken token) {
@@ -114,11 +118,14 @@ public class JwtTokenService {
 	public TokenContext generateAccessAndRefreshToken(Long uid) {
 		LocalDateTime now = LocalDateTime.now();
 
-		LocalDateTime accessExp = now.plusSeconds(jwtProperties.getAccessExp());
-		LocalDateTime refreshExp = now.plusSeconds(jwtProperties.getRefreshExp());
+		LocalDateTime accessExp = now.plusSeconds(jwtConfig.accessExp());
+		LocalDateTime refreshExp = now.plusSeconds(jwtConfig.refreshExp());
 
-		return new TokenContext(createToken(uid, accessExp, ACCESS_TOKEN), accessExp,
-				createToken(uid, refreshExp, REFRESH_TOKEN), refreshExp);
+		Instant accessExpInstant = accessExp.atZone(ZoneId.systemDefault()).toInstant();
+		Instant refreshExpInstant = refreshExp.atZone(ZoneId.systemDefault()).toInstant();
+
+		return new TokenContext(createToken(uid, accessExp, ACCESS_TOKEN), accessExpInstant,
+				createToken(uid, refreshExp, REFRESH_TOKEN), refreshExpInstant);
 	}
 
 	public AuthUserTokenPayload verifyRefreshToken(String refreshToken) {
@@ -131,8 +138,16 @@ public class JwtTokenService {
 		}
 	}
 
+	public void deleteByKey(String key) {
+		refreshTokenRepository.deleteByRefreshToken(key);
+	}
+
+	public void save(RefreshToken token) {
+		refreshTokenRepository.save(token);
+	}
+
 	private String decodePayload(String base64Payload) {
-		return new String(Base64.getDecoder().decode(base64Payload), StandardCharsets.UTF_8);
+		return new String(Base64.getUrlDecoder().decode(base64Payload), StandardCharsets.UTF_8);
 	}
 
 }
