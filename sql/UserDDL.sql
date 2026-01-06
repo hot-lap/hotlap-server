@@ -18,7 +18,7 @@ CREATE TABLE `credential_user`
     `id`           BIGINT       NOT NULL AUTO_INCREMENT COMMENT 'Credential User ID',
     `uid`          BIGINT       NOT NULL COMMENT 'User ID 참조',
     `username`     VARCHAR(255) NOT NULL COMMENT '사용자 아이디',
-    `enc_password` VARCHAR(512) NOT NULL COMMENT '암호화된 비밀번호',
+    `enc_password` VARCHAR(512) NOT NULL COMMENT '해시된 비밀번호',
     `created_at`   DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP COMMENT '생성일',
     `modified_at`  DATETIME     NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP COMMENT '수정일',
     PRIMARY KEY (`id`),
