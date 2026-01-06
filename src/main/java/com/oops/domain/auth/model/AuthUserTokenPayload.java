@@ -10,6 +10,10 @@ import java.util.List;
 @AllArgsConstructor
 public class AuthUserTokenPayload {
 
+	private static final String ACCESS_TOKEN = "accessToken";
+
+	private static final String REFRESH_TOKEN = "refreshToken";
+
 	private final Long id;
 
 	@JsonFormat(with = JsonFormat.Feature.ACCEPT_SINGLE_VALUE_AS_ARRAY)
@@ -20,5 +24,13 @@ public class AuthUserTokenPayload {
 	private final Long exp;
 
 	private final String type;
+
+	public boolean isAccessToken() {
+		return ACCESS_TOKEN.equals(type);
+	}
+
+	public boolean isRefreshToken() {
+		return REFRESH_TOKEN.equals(type);
+	}
 
 }
