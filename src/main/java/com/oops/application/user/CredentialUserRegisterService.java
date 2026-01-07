@@ -12,19 +12,18 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class CredentialUserRegisterService {
 
-	private final CredentialUserCommandRepository credentialUserCommandRepository;
+    private final CredentialUserCommandRepository credentialUserCommandRepository;
 
-	private final PasswordEncoder passwordEncoder;
+    private final PasswordEncoder passwordEncoder;
 
-	public CredentialUserResult register(CredentialUserRegisterCommand command) {
-		var credentialUser = CredentialUser.builder()
-			.uid(command.uid())
-			.username(command.username())
-			.passwordHash(passwordEncoder.encode(command.password()))
-			.build();
+    public CredentialUserResult register(CredentialUserRegisterCommand command) {
+        var credentialUser = CredentialUser.builder()
+                .uid(command.uid())
+                .username(command.username())
+                .passwordHash(passwordEncoder.encode(command.password()))
+                .build();
 
-		var saved = credentialUserCommandRepository.save(credentialUser);
-		return CredentialUserResult.from(saved);
-	}
-
+        var saved = credentialUserCommandRepository.save(credentialUser);
+        return CredentialUserResult.from(saved);
+    }
 }

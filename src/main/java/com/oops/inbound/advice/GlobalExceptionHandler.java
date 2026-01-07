@@ -14,39 +14,40 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
-	@ExceptionHandler(Exception.class)
-	public ErrorResponse handleException(Exception e) {
-		return switch (e) {
-			case MethodArgumentNotValidException mae -> createErrorResponse(mae, HttpStatus.BAD_REQUEST);
+    @ExceptionHandler(Exception.class)
+    public ErrorResponse handleException(Exception e) {
+        return switch (e) {
+            case MethodArgumentNotValidException mae -> createErrorResponse(mae, HttpStatus.BAD_REQUEST);
 
-			default -> {
-				log.error("[ERROR] Unhandled Exception -> {}", e.getMessage(), e);
-				yield new ErrorResponse(HttpStatus.INTERNAL_SERVER_ERROR.value(),
-						ErrorCode.INTERNAL_SERVER_ERROR.name(), ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
-			}
-		};
-	}
+            default -> {
+                log.error("[ERROR] Unhandled Exception -> {}", e.getMessage(), e);
+                yield new ErrorResponse(
+                        HttpStatus.INTERNAL_SERVER_ERROR.value(),
+                        ErrorCode.INTERNAL_SERVER_ERROR.name(),
+                        ErrorCode.INTERNAL_SERVER_ERROR.getMessage());
+            }
+        };
+    }
 
-	private ErrorResponse createErrorResponse(ApplicationException exception, HttpStatus httpStatus) {
-		log.warn("[WARN] {} -> {}", exception.getClass().getSimpleName(), exception.getMessage());
+    private ErrorResponse createErrorResponse(ApplicationException exception, HttpStatus httpStatus) {
+        log.warn("[WARN] {} -> {}", exception.getClass().getSimpleName(), exception.getMessage());
 
-		String message = exception.getMessage() != null && !exception.getMessage().isBlank() ? exception.getMessage()
-				: exception.getErrorCode().getMessage();
+        String message =
+                exception.getMessage() != null && !exception.getMessage().isBlank()
+                        ? exception.getMessage()
+                        : exception.getErrorCode().getMessage();
 
-		return new ErrorResponse(httpStatus.value(), exception.getErrorCode().name(), message);
-	}
+        return new ErrorResponse(httpStatus.value(), exception.getErrorCode().name(), message);
+    }
 
-	private ErrorResponse createErrorResponse(MethodArgumentNotValidException exception, HttpStatus httpStatus) {
-		log.warn("[WARN] {} -> {}", exception.getClass().getSimpleName(), exception.getMessage());
+    private ErrorResponse createErrorResponse(MethodArgumentNotValidException exception, HttpStatus httpStatus) {
+        log.warn("[WARN] {} -> {}", exception.getClass().getSimpleName(), exception.getMessage());
 
-		String message = exception.getBindingResult()
-			.getFieldErrors()
-			.stream()
-			.findFirst()
-			.map(DefaultMessageSourceResolvable::getDefaultMessage)
-			.orElse(ErrorCode.INVALID_REQUEST_ERROR.getMessage());
+        String message = exception.getBindingResult().getFieldErrors().stream()
+                .findFirst()
+                .map(DefaultMessageSourceResolvable::getDefaultMessage)
+                .orElse(ErrorCode.INVALID_REQUEST_ERROR.getMessage());
 
-		return new ErrorResponse(httpStatus.value(), ErrorCode.INVALID_REQUEST_ERROR.name(), message);
-	}
-
+        return new ErrorResponse(httpStatus.value(), ErrorCode.INVALID_REQUEST_ERROR.name(), message);
+    }
 }

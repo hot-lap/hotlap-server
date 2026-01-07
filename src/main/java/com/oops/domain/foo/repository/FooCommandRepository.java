@@ -10,11 +10,10 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class FooCommandRepository {
 
-	private final FooJpaRepository fooJpaRepository;
+    private final FooJpaRepository fooJpaRepository;
 
-	@Transactional
-	public Foo save(Foo foo) {
-		return fooJpaRepository.save(foo);
-	}
-
+    @Transactional
+    public Foo save(Foo foo) {
+        return fooJpaRepository.save(foo);
+    }
 }

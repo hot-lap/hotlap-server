@@ -10,11 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class OAuthUserCommandRepository {
 
-	private final OAuthUserJpaRepository oAuthUserJpaRepository;
+    private final OAuthUserJpaRepository oAuthUserJpaRepository;
 
-	@Transactional
-	public OAuthUser save(OAuthUser oAuthUser) {
-		return oAuthUserJpaRepository.save(oAuthUser);
-	}
-
+    @Transactional
+    public OAuthUser save(OAuthUser oAuthUser) {
+        return oAuthUserJpaRepository.save(oAuthUser);
+    }
 }

@@ -8,23 +8,22 @@ import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 @RequiredArgsConstructor
 public class ExecutorGenerator {
 
-	private final int corePoolSize;
+    private final int corePoolSize;
 
-	private final int maxPoolSize;
+    private final int maxPoolSize;
 
-	private final int queueCapacity;
+    private final int queueCapacity;
 
-	private final String threadNamePrefix;
+    private final String threadNamePrefix;
 
-	public ThreadPoolTaskExecutor generate() {
-		var threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
-		threadPoolTaskExecutor.setCorePoolSize(this.corePoolSize);
-		threadPoolTaskExecutor.setMaxPoolSize(this.maxPoolSize);
-		threadPoolTaskExecutor.setQueueCapacity(this.queueCapacity);
-		threadPoolTaskExecutor.setThreadNamePrefix(this.threadNamePrefix + "-");
-		threadPoolTaskExecutor.initialize();
-		log.info("generate ThreadPoolTaskExecutor : {}", this.threadNamePrefix);
-		return threadPoolTaskExecutor;
-	}
-
+    public ThreadPoolTaskExecutor generate() {
+        var threadPoolTaskExecutor = new ThreadPoolTaskExecutor();
+        threadPoolTaskExecutor.setCorePoolSize(this.corePoolSize);
+        threadPoolTaskExecutor.setMaxPoolSize(this.maxPoolSize);
+        threadPoolTaskExecutor.setQueueCapacity(this.queueCapacity);
+        threadPoolTaskExecutor.setThreadNamePrefix(this.threadNamePrefix + "-");
+        threadPoolTaskExecutor.initialize();
+        log.info("generate ThreadPoolTaskExecutor : {}", this.threadNamePrefix);
+        return threadPoolTaskExecutor;
+    }
 }

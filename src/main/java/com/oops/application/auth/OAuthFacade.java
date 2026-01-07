@@ -22,52 +22,52 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OAuthFacade {
 
-	private final OAuthServiceProvider oAuthServiceProvider;
+    private final OAuthServiceProvider oAuthServiceProvider;
 
-	private final UserInquiryService userInquiryService;
+    private final UserInquiryService userInquiryService;
 
-	private final UserRegisterService userRegisterService;
+    private final UserRegisterService userRegisterService;
 
-	private final OAuthUserInquiryService oAuthUserInquiryService;
+    private final OAuthUserInquiryService oAuthUserInquiryService;
 
-	private final OAuthUserRegisterService oAuthUserRegisterService;
+    private final OAuthUserRegisterService oAuthUserRegisterService;
 
-	private final JwtTokenService jwtTokenService;
+    private final JwtTokenService jwtTokenService;
 
-	@Transactional
-	public AuthResult signUp(OAuthSignUpCommand command) {
-		OAuthService oauthService = oAuthServiceProvider.getService(command.provider());
-		var oauthInfo = oauthService.getOAuthUserInfo(command.accessToken());
+    @Transactional
+    public AuthResult signUp(OAuthSignUpCommand command) {
+        OAuthService oauthService = oAuthServiceProvider.getService(command.provider());
+        var oauthInfo = oauthService.getOAuthUserInfo(command.accessToken());
 
-		boolean isExists = oAuthUserInquiryService.existsByProviderAndOauthId(command.provider(), oauthInfo.oauthId());
+        boolean isExists = oAuthUserInquiryService.existsByProviderAndOauthId(command.provider(), oauthInfo.oauthId());
 
-		var user = isExists
-				? oAuthUserInquiryService.findByProviderAndOauthId(command.provider(), oauthInfo.oauthId())
-					.map(oauthUserResult -> userInquiryService.findById(oauthUserResult.userId()))
-					.orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_USER_FOR_OAUTH_ERROR))
-				: registerNewOAuthUser(command.provider(), oauthInfo);
+        var user = isExists
+                ? oAuthUserInquiryService
+                        .findByProviderAndOauthId(command.provider(), oauthInfo.oauthId())
+                        .map(oauthUserResult -> userInquiryService.findById(oauthUserResult.userId()))
+                        .orElseThrow(() -> new NotFoundException(ErrorCode.NOT_FOUND_USER_FOR_OAUTH_ERROR))
+                : registerNewOAuthUser(command.provider(), oauthInfo);
 
-		var tokens = jwtTokenService.generateAccessAndRefreshToken(user.id());
+        var tokens = jwtTokenService.generateAccessAndRefreshToken(user.id());
 
-		return new AuthResult(user.id(), tokens);
-	}
+        return new AuthResult(user.id(), tokens);
+    }
 
-	private UserResult registerNewOAuthUser(OAuthProvider provider, OAuthUserInfoModel oauthInfo) {
-		var userResult = userRegisterService.register(new UserRegisterCommand(oauthInfo.email(), oauthInfo.name()));
+    private UserResult registerNewOAuthUser(OAuthProvider provider, OAuthUserInfoModel oauthInfo) {
+        var userResult = userRegisterService.register(new UserRegisterCommand(oauthInfo.email(), oauthInfo.name()));
 
-		oAuthUserRegisterService.register(new OAuthUserRegisterCommand(provider, oauthInfo.oauthId(), userResult.id()));
+        oAuthUserRegisterService.register(new OAuthUserRegisterCommand(provider, oauthInfo.oauthId(), userResult.id()));
 
-		return userResult;
-	}
+        return userResult;
+    }
 
-	public OAuthCheckResult checkSignUp(String provider, String accessToken) {
-		var oauthProvider = OAuthProvider.from(provider);
-		OAuthService oauthService = oAuthServiceProvider.getService(oauthProvider);
-		var oauthInfo = oauthService.getOAuthUserInfo(accessToken);
+    public OAuthCheckResult checkSignUp(String provider, String accessToken) {
+        var oauthProvider = OAuthProvider.from(provider);
+        OAuthService oauthService = oAuthServiceProvider.getService(oauthProvider);
+        var oauthInfo = oauthService.getOAuthUserInfo(accessToken);
 
-		boolean exists = oAuthUserInquiryService.existsByProviderAndOauthId(oauthProvider, oauthInfo.oauthId());
+        boolean exists = oAuthUserInquiryService.existsByProviderAndOauthId(oauthProvider, oauthInfo.oauthId());
 
-		return new OAuthCheckResult(exists);
-	}
-
+        return new OAuthCheckResult(exists);
+    }
 }

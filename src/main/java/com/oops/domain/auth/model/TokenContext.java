@@ -1,10 +1,10 @@
 package com.oops.domain.auth.model;
 
-import lombok.Getter;
-import lombok.AllArgsConstructor;
-import lombok.NoArgsConstructor;
-import lombok.Builder;
 import java.time.LocalDateTime;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 @Getter
 @Builder
@@ -12,12 +12,11 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 public class TokenContext {
 
-	private String accessToken;
+    private String accessToken;
 
-	private LocalDateTime accessTokenExp;
+    private LocalDateTime accessTokenExp;
 
-	private String refreshToken;
+    private String refreshToken;
 
-	private LocalDateTime refreshTokenExp;
-
+    private LocalDateTime refreshTokenExp;
 }

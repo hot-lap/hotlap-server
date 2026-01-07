@@ -11,12 +11,12 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class FooRegisterService {
 
-	private final FooCommandRepository fooCommandRepository;
+    private final FooCommandRepository fooCommandRepository;
 
-	public FooResult register(FooRegisterCommand command) {
-		var createdFoo = fooCommandRepository.save(Foo.builder().description(command.description()).build());
+    public FooResult register(FooRegisterCommand command) {
+        var createdFoo = fooCommandRepository.save(
+                Foo.builder().description(command.description()).build());
 
-		return FooResult.from(createdFoo);
-	}
-
+        return FooResult.from(createdFoo);
+    }
 }

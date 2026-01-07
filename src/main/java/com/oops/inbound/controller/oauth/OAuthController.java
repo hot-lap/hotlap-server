@@ -25,23 +25,22 @@ import org.springframework.web.bind.annotation.RestController;
 @Tag(name = "OAuth", description = "소셜 로그인 API")
 public class OAuthController {
 
-	private final OAuthFacade oAuthFacade;
+    private final OAuthFacade oAuthFacade;
 
-	@PostMapping("/{provider}/signup")
-	@Operation(summary = "OAuth 회원 가입")
-	@ResponseStatus(HttpStatus.CREATED)
-	public ResponseDto<AuthResponse> signup(@PathVariable String provider,
-			@RequestBody @Valid OAuthSignUpRequest request) {
-		var response = oAuthFacade.signUp(request.toCommand(provider));
-		return ResponseDto.wrap(AuthResponse.from(response));
-	}
+    @PostMapping("/{provider}/signup")
+    @Operation(summary = "OAuth 회원 가입")
+    @ResponseStatus(HttpStatus.CREATED)
+    public ResponseDto<AuthResponse> signup(
+            @PathVariable String provider, @RequestBody @Valid OAuthSignUpRequest request) {
+        var response = oAuthFacade.signUp(request.toCommand(provider));
+        return ResponseDto.wrap(AuthResponse.from(response));
+    }
 
-	@GetMapping("/{provider}/signup/check")
-	@Operation(summary = "가입 여부 확인")
-	public ResponseDto<OAuthCheckResponse> checkSignUp(@PathVariable String provider,
-			@RequestParam String accessToken) {
-		var response = oAuthFacade.checkSignUp(provider, accessToken);
-		return ResponseDto.wrap(OAuthCheckResponse.from(response));
-	}
-
+    @GetMapping("/{provider}/signup/check")
+    @Operation(summary = "가입 여부 확인")
+    public ResponseDto<OAuthCheckResponse> checkSignUp(
+            @PathVariable String provider, @RequestParam String accessToken) {
+        var response = oAuthFacade.checkSignUp(provider, accessToken);
+        return ResponseDto.wrap(OAuthCheckResponse.from(response));
+    }
 }

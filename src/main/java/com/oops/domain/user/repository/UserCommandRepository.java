@@ -10,11 +10,10 @@ import org.springframework.stereotype.Repository;
 @RequiredArgsConstructor
 public class UserCommandRepository {
 
-	private final UserJpaRepository userJpaRepository;
+    private final UserJpaRepository userJpaRepository;
 
-	@Transactional
-	public User save(User user) {
-		return userJpaRepository.save(user);
-	}
-
+    @Transactional
+    public User save(User user) {
+        return userJpaRepository.save(user);
+    }
 }

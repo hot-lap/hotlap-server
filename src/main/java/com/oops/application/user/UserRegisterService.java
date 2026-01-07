@@ -12,13 +12,15 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserRegisterService {
 
-	private final UserCommandRepository userCommandRepository;
+    private final UserCommandRepository userCommandRepository;
 
-	public UserResult register(UserRegisterCommand command) {
-		var user = User.builder().email(new EncryptData(command.email())).name(command.name()).build();
+    public UserResult register(UserRegisterCommand command) {
+        var user = User.builder()
+                .email(new EncryptData(command.email()))
+                .name(command.name())
+                .build();
 
-		var savedUser = userCommandRepository.save(user);
-		return UserResult.from(savedUser);
-	}
-
+        var savedUser = userCommandRepository.save(user);
+        return UserResult.from(savedUser);
+    }
 }

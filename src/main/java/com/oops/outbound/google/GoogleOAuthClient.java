@@ -9,7 +9,6 @@ import org.springframework.web.service.annotation.HttpExchange;
 @HttpExchange(url = "https://www.googleapis.com", accept = MediaType.APPLICATION_JSON_VALUE)
 public interface GoogleOAuthClient {
 
-	@GetExchange("/oauth2/v3/userinfo")
-	GoogleUserInfoResponse getUserInfo(@RequestHeader("Authorization") String bearerToken);
-
+    @GetExchange("/oauth2/v3/userinfo")
+    GoogleUserInfoResponse getUserInfo(@RequestHeader("Authorization") String bearerToken);
 }

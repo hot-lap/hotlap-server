@@ -10,11 +10,10 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class CredentialUserCommandRepository {
 
-	private final CredentialUserJpaRepository credentialUserJpaRepository;
+    private final CredentialUserJpaRepository credentialUserJpaRepository;
 
-	@Transactional
-	public CredentialUser save(CredentialUser credentialUser) {
-		return credentialUserJpaRepository.save(credentialUser);
-	}
-
+    @Transactional
+    public CredentialUser save(CredentialUser credentialUser) {
+        return credentialUserJpaRepository.save(credentialUser);
+    }
 }

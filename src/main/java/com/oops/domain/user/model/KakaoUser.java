@@ -20,13 +20,12 @@ import lombok.NoArgsConstructor;
 @Builder
 public class KakaoUser extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private Long uid;
+    private Long uid;
 
-	@Column(name = "oauth_id")
-	private String oauthId;
-
+    @Column(name = "oauth_id")
+    private String oauthId;
 }

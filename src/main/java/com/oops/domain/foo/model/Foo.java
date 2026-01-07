@@ -15,11 +15,10 @@ import lombok.NoArgsConstructor;
 @Builder
 public class Foo extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	@Column(name = "description")
-	private String description;
-
+    @Column(name = "description")
+    private String description;
 }

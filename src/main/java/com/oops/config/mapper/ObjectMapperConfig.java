@@ -11,13 +11,13 @@ import org.springframework.context.annotation.Primary;
 @Configuration
 public class ObjectMapperConfig {
 
-	@Bean
-	@Primary
-	public ObjectMapper objectMapper() {
-		return new ObjectMapper().setDefaultPropertyInclusion(
-				JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL))
-			.registerModule(new JavaTimeModule())
-			.disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
-	}
-
+    @Bean
+    @Primary
+    public ObjectMapper objectMapper() {
+        return new ObjectMapper()
+                .setDefaultPropertyInclusion(
+                        JsonInclude.Value.construct(JsonInclude.Include.NON_NULL, JsonInclude.Include.NON_NULL))
+                .registerModule(new JavaTimeModule())
+                .disable(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS);
+    }
 }

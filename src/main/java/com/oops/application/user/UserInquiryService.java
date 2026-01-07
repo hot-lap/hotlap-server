@@ -9,11 +9,10 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class UserInquiryService {
 
-	private final UserQueryRepository userQueryRepository;
+    private final UserQueryRepository userQueryRepository;
 
-	public UserResult findById(Long id) {
-		var user = userQueryRepository.findByIdOrThrow(id);
-		return UserResult.from(user);
-	}
-
+    public UserResult findById(Long id) {
+        var user = userQueryRepository.findByIdOrThrow(id);
+        return UserResult.from(user);
+    }
 }

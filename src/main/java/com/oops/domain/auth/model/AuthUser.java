@@ -2,14 +2,13 @@ package com.oops.domain.auth.model;
 
 public interface AuthUser {
 
-	Long getUid();
+    Long getUid();
 
-	AuthContext getContext();
+    AuthContext getContext();
 
-	boolean isAuthor(Long uid);
+    boolean isAuthor(Long uid);
 
-	void isAuthorThrow(Long uid);
+    void isAuthorThrow(Long uid);
 
-	void isNotAuthorThrow(Long uid);
-
+    void isNotAuthorThrow(Long uid);
 }

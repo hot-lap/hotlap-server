@@ -23,16 +23,15 @@ import lombok.NoArgsConstructor;
 @Builder
 public class User extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id")
+    private Long id;
 
-	@Convert(converter = EncryptConverter.class)
-	private EncryptData email;
+    @Convert(converter = EncryptConverter.class)
+    private EncryptData email;
 
-	private String name;
+    private String name;
 
-	private String nickname;
-
+    private String nickname;
 }

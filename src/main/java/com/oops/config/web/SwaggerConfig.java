@@ -9,14 +9,13 @@ import org.springframework.context.annotation.Configuration;
 @RequiredArgsConstructor
 public class SwaggerConfig {
 
-	@Bean
-	public GroupedOpenApi api() {
-		return GroupedOpenApi.builder().group("api").pathsToMatch("/api/**").build();
-	}
+    @Bean
+    public GroupedOpenApi api() {
+        return GroupedOpenApi.builder().group("api").pathsToMatch("/api/**").build();
+    }
 
-	@Bean
-	public GroupedOpenApi dev() {
-		return GroupedOpenApi.builder().group("dev").pathsToMatch("/dev/**").build();
-	}
-
+    @Bean
+    public GroupedOpenApi dev() {
+        return GroupedOpenApi.builder().group("dev").pathsToMatch("/dev/**").build();
+    }
 }

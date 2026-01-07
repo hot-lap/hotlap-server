@@ -10,16 +10,15 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class RefreshTokenCommandRepository {
 
-	private final RefreshTokenJpaRepository refreshTokenJpaRepository;
+    private final RefreshTokenJpaRepository refreshTokenJpaRepository;
 
-	@Transactional
-	public void deleteByUid(Long uid) {
-		refreshTokenJpaRepository.deleteByUid(uid);
-	}
+    @Transactional
+    public void deleteByUid(Long uid) {
+        refreshTokenJpaRepository.deleteByUid(uid);
+    }
 
-	@Transactional
-	public RefreshToken save(RefreshToken refreshToken) {
-		return refreshTokenJpaRepository.save(refreshToken);
-	}
-
+    @Transactional
+    public RefreshToken save(RefreshToken refreshToken) {
+        return refreshTokenJpaRepository.save(refreshToken);
+    }
 }

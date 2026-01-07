@@ -1,4 +1,3 @@
 package com.oops.application.auth.model.result;
 
-public record OAuthCheckResult(boolean isExists) {
-}
+public record OAuthCheckResult(boolean isExists) {}

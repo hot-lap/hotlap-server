@@ -20,15 +20,14 @@ import lombok.NoArgsConstructor;
 @Builder
 public class CredentialUser extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
-	private Long uid;
+    private Long uid;
 
-	private String username;
+    private String username;
 
-	@Column(name = "enc_password", nullable = false)
-	private String passwordHash;
-
+    @Column(name = "enc_password", nullable = false)
+    private String passwordHash;
 }

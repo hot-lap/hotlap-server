@@ -11,20 +11,22 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class ApplicationExceptionHandler {
 
-	@ExceptionHandler(ApplicationException.class)
-	public ResponseEntity<ErrorResponse> handleApplicationException(ApplicationException e) {
-		log.error("[ERROR] ApplicationException -> {}", e.getMessage(), e);
-		var response = createErrorResponse(e);
-		return ResponseEntity.status(e.getHttpStatus()).body(response);
-	}
+    @ExceptionHandler(ApplicationException.class)
+    public ResponseEntity<ErrorResponse> handleApplicationException(ApplicationException e) {
+        log.error("[ERROR] ApplicationException -> {}", e.getMessage(), e);
+        var response = createErrorResponse(e);
+        return ResponseEntity.status(e.getHttpStatus()).body(response);
+    }
 
-	private ErrorResponse createErrorResponse(ApplicationException exception) {
-		log.warn("[WARN] {} -> {}", exception.getClass().getSimpleName(), exception.getMessage());
+    private ErrorResponse createErrorResponse(ApplicationException exception) {
+        log.warn("[WARN] {} -> {}", exception.getClass().getSimpleName(), exception.getMessage());
 
-		String message = exception.getMessage() != null && !exception.getMessage().isBlank() ? exception.getMessage()
-				: exception.getErrorCode().getMessage();
+        String message =
+                exception.getMessage() != null && !exception.getMessage().isBlank()
+                        ? exception.getMessage()
+                        : exception.getErrorCode().getMessage();
 
-		return new ErrorResponse(exception.getHttpStatus().value(), exception.getErrorCode().name(), message);
-	}
-
+        return new ErrorResponse(
+                exception.getHttpStatus().value(), exception.getErrorCode().name(), message);
+    }
 }

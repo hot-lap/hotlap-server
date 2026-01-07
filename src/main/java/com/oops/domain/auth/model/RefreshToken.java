@@ -18,20 +18,19 @@ import lombok.NoArgsConstructor;
 @Table(name = "refresh_token")
 public class RefreshToken extends BaseEntity {
 
-	/**
-	 * 리프레시 토큰 해당 유저
-	 */
-	@Id
-	private Long uid;
+    /**
+     * 리프레시 토큰 해당 유저
+     */
+    @Id
+    private Long uid;
 
-	/**
-	 * 리프레시 토큰
-	 */
-	@Column(name = "refresh_token", nullable = false, length = 255)
-	private String refreshToken;
+    /**
+     * 리프레시 토큰
+     */
+    @Column(name = "refresh_token", nullable = false, length = 255)
+    private String refreshToken;
 
-	public void updateRefreshToken(String refreshToken) {
-		this.refreshToken = refreshToken;
-	}
-
+    public void updateRefreshToken(String refreshToken) {
+        this.refreshToken = refreshToken;
+    }
 }

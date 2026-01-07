@@ -17,31 +17,33 @@ import org.springframework.web.method.support.ModelAndViewContainer;
 @RequiredArgsConstructor
 public class AuthUserArgumentResolver implements HandlerMethodArgumentResolver {
 
-	private final AuthService authService;
+    private final AuthService authService;
 
-	@Override
-	public boolean supportsParameter(MethodParameter parameter) {
-		return parameter.getParameterType().equals(AuthUser.class);
-	}
+    @Override
+    public boolean supportsParameter(MethodParameter parameter) {
+        return parameter.getParameterType().equals(AuthUser.class);
+    }
 
-	@Override
-	public Object resolveArgument(MethodParameter parameter, ModelAndViewContainer mavContainer,
-			NativeWebRequest webRequest, WebDataBinderFactory binderFactory) {
-		var httpServletRequest = (HttpServletRequest) webRequest.getNativeRequest();
+    @Override
+    public Object resolveArgument(
+            MethodParameter parameter,
+            ModelAndViewContainer mavContainer,
+            NativeWebRequest webRequest,
+            WebDataBinderFactory binderFactory) {
+        var httpServletRequest = (HttpServletRequest) webRequest.getNativeRequest();
 
-		var accessToken = httpServletRequest.getHeader(AuthConstants.AUTH_TOKEN_KEY);
+        var accessToken = httpServletRequest.getHeader(AuthConstants.AUTH_TOKEN_KEY);
 
-		if (accessToken == null) {
-			if (parameter.isOptional()) {
-				return null;
-			}
+        if (accessToken == null) {
+            if (parameter.isOptional()) {
+                return null;
+            }
 
-			accessToken = "";
-		}
+            accessToken = "";
+        }
 
-		var token = new AuthUserToken(accessToken);
+        var token = new AuthUserToken(accessToken);
 
-		return authService.resolveAuthUser(token);
-	}
-
+        return authService.resolveAuthUser(token);
+    }
 }

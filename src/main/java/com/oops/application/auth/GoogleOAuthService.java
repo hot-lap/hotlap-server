@@ -14,23 +14,21 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class GoogleOAuthService implements OAuthService {
 
-	private final GoogleOAuthClient googleOAuthClient;
+    private final GoogleOAuthClient googleOAuthClient;
 
-	@Override
-	public OAuthProvider getProvider() {
-		return OAuthProvider.GOOGLE;
-	}
+    @Override
+    public OAuthProvider getProvider() {
+        return OAuthProvider.GOOGLE;
+    }
 
-	@Override
-	public OAuthUserInfoModel getOAuthUserInfo(String accessToken) {
-		try {
-			var response = googleOAuthClient.getUserInfo("Bearer " + accessToken);
-			return new OAuthUserInfoModel(response.sub(), response.email(), response.name());
-		}
-		catch (Exception e) {
-			log.error("Google Oauth API 호출 실패: {}", e.getMessage(), e);
-			throw new OAuthException(ErrorCode.GOOGLE_OAUTH_FAILED_ERROR);
-		}
-	}
-
+    @Override
+    public OAuthUserInfoModel getOAuthUserInfo(String accessToken) {
+        try {
+            var response = googleOAuthClient.getUserInfo("Bearer " + accessToken);
+            return new OAuthUserInfoModel(response.sub(), response.email(), response.name());
+        } catch (Exception e) {
+            log.error("Google Oauth API 호출 실패: {}", e.getMessage(), e);
+            throw new OAuthException(ErrorCode.GOOGLE_OAUTH_FAILED_ERROR);
+        }
+    }
 }

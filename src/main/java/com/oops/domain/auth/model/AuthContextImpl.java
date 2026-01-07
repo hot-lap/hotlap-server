@@ -7,11 +7,10 @@ import lombok.Getter;
 @AllArgsConstructor
 public class AuthContextImpl implements AuthContext {
 
-	private final String name;
+    private final String name;
 
-	@Override
-	public String name() {
-		return name;
-	}
-
+    @Override
+    public String name() {
+        return name;
+    }
 }

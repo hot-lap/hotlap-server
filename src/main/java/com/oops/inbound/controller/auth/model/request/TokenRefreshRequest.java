@@ -9,14 +9,13 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 public class TokenRefreshRequest {
 
-	/**
-	 * susu access token
-	 */
-	private String accessToken;
+    /**
+     * susu access token
+     */
+    private String accessToken;
 
-	/**
-	 * susu refresh token
-	 */
-	private String refreshToken;
-
+    /**
+     * susu refresh token
+     */
+    private String refreshToken;
 }

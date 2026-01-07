@@ -5,6 +5,4 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 @Repository
-public interface KakaoUserJpaRepository extends JpaRepository<KakaoUser, Long> {
-
-}
+public interface KakaoUserJpaRepository extends JpaRepository<KakaoUser, Long> {}

@@ -7,20 +7,18 @@ import org.springframework.stereotype.Service;
 
 public interface FooInquiryService {
 
-	FooResult inquiry(Long id);
+    FooResult inquiry(Long id);
 
-	@Service
-	@RequiredArgsConstructor
-	class Default implements FooInquiryService {
+    @Service
+    @RequiredArgsConstructor
+    class Default implements FooInquiryService {
 
-		private final FooQueryRepository fooQueryRepository;
+        private final FooQueryRepository fooQueryRepository;
 
-		@Override
-		public FooResult inquiry(Long id) {
-			var foo = fooQueryRepository.findByIdOrThrow(id);
-			return FooResult.from(foo);
-		}
-
-	}
-
+        @Override
+        public FooResult inquiry(Long id) {
+            var foo = fooQueryRepository.findByIdOrThrow(id);
+            return FooResult.from(foo);
+        }
+    }
 }

@@ -11,22 +11,21 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class EncryptConverter implements AttributeConverter<EncryptData, String> {
 
-	private final EncryptionService encryptionService;
+    private final EncryptionService encryptionService;
 
-	@Override
-	public String convertToDatabaseColumn(EncryptData attribute) {
-		if (attribute == null) {
-			return null;
-		}
-		return encryptionService.encrypt(attribute.getEncData());
-	}
+    @Override
+    public String convertToDatabaseColumn(EncryptData attribute) {
+        if (attribute == null) {
+            return null;
+        }
+        return encryptionService.encrypt(attribute.getEncData());
+    }
 
-	@Override
-	public EncryptData convertToEntityAttribute(String dbData) {
-		if (dbData == null) {
-			return null;
-		}
-		return new EncryptData(encryptionService.decrypt(dbData));
-	}
-
+    @Override
+    public EncryptData convertToEntityAttribute(String dbData) {
+        if (dbData == null) {
+            return null;
+        }
+        return new EncryptData(encryptionService.decrypt(dbData));
+    }
 }

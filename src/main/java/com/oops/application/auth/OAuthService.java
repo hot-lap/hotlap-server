@@ -5,8 +5,7 @@ import com.oops.domain.user.model.vo.OAuthProvider;
 
 public interface OAuthService {
 
-	OAuthProvider getProvider();
+    OAuthProvider getProvider();
 
-	OAuthUserInfoModel getOAuthUserInfo(String accessToken);
-
+    OAuthUserInfoModel getOAuthUserInfo(String accessToken);
 }

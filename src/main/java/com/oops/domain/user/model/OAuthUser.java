@@ -17,26 +17,25 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "oauth_users", uniqueConstraints = @UniqueConstraint(columnNames = { "provider", "oauth_id" }))
+@Table(name = "oauth_users", uniqueConstraints = @UniqueConstraint(columnNames = {"provider", "oauth_id"}))
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
 public class OAuthUser extends BaseEntity {
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	@Column(name = "oauth_user_id")
-	private Long id;
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "oauth_user_id")
+    private Long id;
 
-	@Enumerated(EnumType.STRING)
-	@Column(name = "provider", nullable = false, length = 20)
-	private OAuthProvider provider;
+    @Enumerated(EnumType.STRING)
+    @Column(name = "provider", nullable = false, length = 20)
+    private OAuthProvider provider;
 
-	@Column(name = "oauth_id", nullable = false)
-	private String oauthId;
+    @Column(name = "oauth_id", nullable = false)
+    private String oauthId;
 
-	@Column(name = "user_id", nullable = false)
-	private Long userId;
-
+    @Column(name = "user_id", nullable = false)
+    private Long userId;
 }

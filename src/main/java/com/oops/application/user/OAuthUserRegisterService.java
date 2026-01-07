@@ -11,17 +11,16 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class OAuthUserRegisterService {
 
-	private final OAuthUserCommandRepository oAuthUserCommandRepository;
+    private final OAuthUserCommandRepository oAuthUserCommandRepository;
 
-	public OAuthUserResult register(OAuthUserRegisterCommand command) {
-		var oauthUser = OAuthUser.builder()
-			.provider(command.provider())
-			.oauthId(command.oauthId())
-			.userId(command.userId())
-			.build();
+    public OAuthUserResult register(OAuthUserRegisterCommand command) {
+        var oauthUser = OAuthUser.builder()
+                .provider(command.provider())
+                .oauthId(command.oauthId())
+                .userId(command.userId())
+                .build();
 
-		var saved = oAuthUserCommandRepository.save(oauthUser);
-		return OAuthUserResult.from(saved);
-	}
-
+        var saved = oAuthUserCommandRepository.save(oauthUser);
+        return OAuthUserResult.from(saved);
+    }
 }

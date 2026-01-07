@@ -13,25 +13,23 @@ import org.springframework.context.annotation.Configuration;
 @EnableConfigurationProperties(JwtConfig.JwtProperties.class)
 public class JwtConfig {
 
-	@Getter
-	@Setter
-	@ToString
-	@ConfigurationProperties(prefix = "auth.jwt")
-	public static class JwtProperties {
+    @Getter
+    @Setter
+    @ToString
+    @ConfigurationProperties(prefix = "auth.jwt")
+    public static class JwtProperties {
 
-		@NotBlank
-		private String secret = "";
+        @NotBlank
+        private String secret = "";
 
-		@Min(1)
-		private int accessExp = 0;
+        @Min(1)
+        private int accessExp = 0;
 
-		@Min(1)
-		private int refreshExp = 0;
+        @Min(1)
+        private int refreshExp = 0;
 
-		private String issuer = "cinement-api";
+        private String issuer = "cinement-api";
 
-		private String audience = "cinement-api";
-
-	}
-
+        private String audience = "cinement-api";
+    }
 }
