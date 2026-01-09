@@ -1,6 +1,7 @@
 package com.oops.config.auth;
 
 import com.oops.outbound.google.GoogleOAuthClient;
+import com.oops.outbound.google.GoogleOAuthTokenClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpHeaders;
@@ -24,5 +25,12 @@ public class GoogleOAuthConfig {
         return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(googleRestClient))
                 .build()
                 .createClient(GoogleOAuthClient.class);
+    }
+
+    @Bean
+    public GoogleOAuthTokenClient googleOAuthTokenClient(RestClient googleRestClient) {
+        return HttpServiceProxyFactory.builderFor(RestClientAdapter.create(googleRestClient))
+                .build()
+                .createClient(GoogleOAuthTokenClient.class);
     }
 }
