@@ -39,9 +39,8 @@ public class OAuthController {
 	@GetMapping("/{provider}/signup/check")
 	@Operation(summary = "가입 여부 확인")
 	public ResponseDto<OAuthCheckResponse> checkSignUp(@PathVariable String provider,
-			@RequestParam String accessToken) {
-		var response = oAuthFacade.checkSignUp(provider, accessToken);
+			@RequestParam String authorizationCode) {
+		var response = oAuthFacade.checkSignUp(provider, authorizationCode);
 		return ResponseDto.wrap(OAuthCheckResponse.from(response));
 	}
-
 }

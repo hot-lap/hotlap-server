@@ -37,7 +37,7 @@ public class OAuthFacade {
 	@Transactional
 	public AuthResult signUp(OAuthSignUpCommand command) {
 		OAuthService oauthService = oAuthServiceProvider.getService(command.provider());
-		var oauthInfo = oauthService.getOAuthUserInfo(command.accessToken());
+		var oauthInfo = oauthService.getOAuthUserInfo(command.authorizationCode());
 
 		boolean isExists = oAuthUserInquiryService.existsByProviderAndOauthId(command.provider(), oauthInfo.oauthId());
 
@@ -60,10 +60,10 @@ public class OAuthFacade {
 		return userResult;
 	}
 
-	public OAuthCheckResult checkSignUp(String provider, String accessToken) {
+	public OAuthCheckResult checkSignUp(String provider, String authorizationCode) {
 		var oauthProvider = OAuthProvider.from(provider);
 		OAuthService oauthService = oAuthServiceProvider.getService(oauthProvider);
-		var oauthInfo = oauthService.getOAuthUserInfo(accessToken);
+		var oauthInfo = oauthService.getOAuthUserInfo(authorizationCode);
 
 		boolean exists = oAuthUserInquiryService.existsByProviderAndOauthId(oauthProvider, oauthInfo.oauthId());
 
