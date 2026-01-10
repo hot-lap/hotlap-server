@@ -1,7 +1,7 @@
 package com.oops.inbound.controller.oauth.model.response;
 
-import com.oops.application.auth.model.TokenContext;
 import com.oops.application.auth.model.result.AuthResult;
+import com.oops.domain.auth.model.TokenContext;
 
 public record AuthResponse(Long uid, TokenContext tokens) {
     public static AuthResponse from(AuthResult result) {

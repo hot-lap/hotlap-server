@@ -6,6 +6,7 @@ import java.util.Base64;
 import javax.crypto.Cipher;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import lombok.SneakyThrows;
 
 public class Encryptor {
 
@@ -25,9 +26,10 @@ public class Encryptor {
         return mapper.readValue(decryptedData, clazz);
     }
 
-    public <T> String enc(T plainData) throws Exception {
+    @SneakyThrows
+    public <T> EncryptData enc(T plainData) {
         String stringPlainData = mapper.writeValueAsString(plainData);
-        return encrypt(stringPlainData);
+        return new EncryptData(encrypt(stringPlainData));
     }
 
     public String encrypt(String text) throws Exception {

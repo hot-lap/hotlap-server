@@ -25,6 +25,7 @@ public enum ErrorCode {
     NOT_FOUND_USER_FOR_OAUTH_ERROR("OAuth 사용자를 찾을 수 없습니다."),
     NOT_SUPPORTED_OAUTH_PROVIDER("지원하지 않는 OAuth 제공자입니다."),
     NOT_FOUND_USER_ERROR("사용자를 찾을 수 없습니다."),
+    ALREADY_EXISTS_CREDENTIAL_USERNAME_ERROR("이미 존재하는 일반회원 유저명입니다."),
 
     /**
      * Validation

@@ -1,6 +1,5 @@
 package com.oops.application.auth;
 
-import com.oops.application.auth.model.TokenContext;
 import com.oops.common.exception.ErrorCode;
 import com.oops.common.exception.InvalidTokenException;
 import com.oops.common.exception.NoAuthorityException;
@@ -9,6 +8,7 @@ import com.oops.domain.auth.model.AuthUser;
 import com.oops.domain.auth.model.AuthUserImpl;
 import com.oops.domain.auth.model.AuthUserToken;
 import com.oops.domain.auth.model.RefreshToken;
+import com.oops.domain.auth.model.TokenContext;
 import com.oops.domain.auth.repository.RefreshTokenCommandRepository;
 import com.oops.domain.user.repository.UserQueryRepository;
 import com.oops.inbound.controller.auth.model.request.TokenRefreshRequest;

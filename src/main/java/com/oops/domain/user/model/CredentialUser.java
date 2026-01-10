@@ -1,5 +1,6 @@
 package com.oops.domain.user.model;
 
+import com.oops.domain.user.model.enums.UserType;
 import com.oops.outbound.mysql.common.BaseEntity;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -18,11 +19,11 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
-public class CredentialUser extends BaseEntity {
+public class CredentialUser extends BaseEntity implements UserContext {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id = 0L;
 
     private Long uid;
 
@@ -30,4 +31,9 @@ public class CredentialUser extends BaseEntity {
 
     @Column(name = "enc_password", nullable = false)
     private String passwordHash;
+
+    @Override
+    public UserType getType() {
+        return UserType.CREDENTIAL;
+    }
 }
