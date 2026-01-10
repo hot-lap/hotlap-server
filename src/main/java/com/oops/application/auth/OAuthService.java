@@ -7,5 +7,5 @@ public interface OAuthService {
 
     OAuthProvider getProvider();
 
-    OAuthUserInfoModel getOAuthUserInfo(String accessToken);
+    OAuthUserInfoModel getOAuthUserInfo(String authorizationCode);
 }

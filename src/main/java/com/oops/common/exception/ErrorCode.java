@@ -22,6 +22,7 @@ public enum ErrorCode {
     INVALID_REFRESH_TOKEN_ERROR("유효한 리프레시 토큰이 아닙니다."),
     INVALID_ACCESS_TOKEN_ERROR("유효한 액세스 토큰이 아닙니다."),
     GOOGLE_OAUTH_FAILED_ERROR("Google OAuth 인증에 실패했습니다."),
+    KAKAO_OAUTH_FAILED_ERROR("Kakao OAuth 인증에 실패했습니다."),
     NOT_FOUND_USER_FOR_OAUTH_ERROR("OAuth 사용자를 찾을 수 없습니다."),
     NOT_SUPPORTED_OAUTH_PROVIDER("지원하지 않는 OAuth 제공자입니다."),
     NOT_FOUND_USER_ERROR("사용자를 찾을 수 없습니다."),
