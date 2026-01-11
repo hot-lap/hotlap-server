@@ -8,12 +8,11 @@ import org.springframework.web.service.annotation.HttpExchange;
 import org.springframework.web.service.annotation.PostExchange;
 
 @HttpExchange(
-		url = "https://kauth.kakao.com",
-		accept = MediaType.APPLICATION_JSON_VALUE,
-		contentType = MediaType.APPLICATION_FORM_URLENCODED_VALUE
-)
+        url = "https://kauth.kakao.com",
+        accept = MediaType.APPLICATION_JSON_VALUE,
+        contentType = MediaType.APPLICATION_FORM_URLENCODED_VALUE)
 public interface KakaoOAuthTokenClient {
 
-	@PostExchange("/oauth/token")
-	KakaoOAuthTokenResponse getToken(@RequestBody MultiValueMap<String, String> formData);
+    @PostExchange("/oauth/token")
+    KakaoOAuthTokenResponse getToken(@RequestBody MultiValueMap<String, String> formData);
 }

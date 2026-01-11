@@ -9,6 +9,6 @@ import org.springframework.web.service.annotation.PostExchange;
 @HttpExchange(url = "https://kapi.kakao.com", accept = MediaType.APPLICATION_JSON_VALUE)
 public interface KakaoOAuthClient {
 
-	@PostExchange("/v2/user/me")
-	KakaoUserInfoResponse getUserInfo(@RequestHeader("Authorization") String bearerToken);
+    @PostExchange("/v2/user/me")
+    KakaoUserInfoResponse getUserInfo(@RequestHeader("Authorization") String bearerToken);
 }

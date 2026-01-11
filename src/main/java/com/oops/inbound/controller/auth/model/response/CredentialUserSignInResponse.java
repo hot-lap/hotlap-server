@@ -1,7 +1,7 @@
 package com.oops.inbound.controller.auth.model.response;
 
 import com.oops.application.auth.model.result.CredentialUserSignInResult;
-import java.time.ZoneId;
+import com.oops.common.util.TimeZone;
 import java.time.ZonedDateTime;
 
 public record CredentialUserSignInResponse(
@@ -14,8 +14,8 @@ public record CredentialUserSignInResponse(
         return new CredentialUserSignInResponse(
                 result.uid(),
                 result.context().accessToken(),
-                result.context().accessTokenExpiresAt().atZone(ZoneId.of("Asia/Seoul")),
+                result.context().accessTokenExpiresAt().atZone(TimeZone.KOREA),
                 result.context().refreshToken(),
-                result.context().refreshTokenExpiresAt().atZone(ZoneId.of("Asia/Seoul")));
+                result.context().refreshTokenExpiresAt().atZone(TimeZone.KOREA));
     }
 }

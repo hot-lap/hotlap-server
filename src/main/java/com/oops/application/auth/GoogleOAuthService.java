@@ -43,7 +43,9 @@ public class GoogleOAuthService implements OAuthService {
             formData.add("grant_type", "authorization_code");
 
             var response = googleOAuthTokenClient.getToken(formData);
-            if (response == null || response.accessToken() == null || response.accessToken().isBlank()) {
+            if (response == null
+                    || response.accessToken() == null
+                    || response.accessToken().isBlank()) {
                 throw new OAuthException(ErrorCode.GOOGLE_OAUTH_FAILED_ERROR);
             }
             return response.accessToken();

@@ -2,14 +2,13 @@ package com.oops.common.util;
 
 public final class StringUtil {
 
-	private StringUtil() {
-	}
+    private StringUtil() {}
 
-	public static boolean isNotBlank(String value) {
-		return value != null && !value.isBlank();
-	}
+    public static boolean isNotBlank(String value) {
+        return value != null && !value.isBlank();
+    }
 
-	public static String nullIfBlank(String value) {
-		return isNotBlank(value) ? value : null;
-	}
+    public static String nullIfBlank(String value) {
+        return isNotBlank(value) ? value : null;
+    }
 }
